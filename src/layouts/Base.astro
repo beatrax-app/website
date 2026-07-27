@@ -6,7 +6,7 @@ import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import LanguageRedirect from "../components/LanguageRedirect.astro";
 import { site } from "../data/site";
-import { copyFor, localePath, LOCALES, type Locale } from "../i18n";
+import { copyFor, localePath, stripLocale, LOCALES, type Locale } from "../i18n";
 
 interface Props {
   locale: Locale;
@@ -20,7 +20,44 @@ const t = copyFor(locale);
 
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} — ${t.meta.tagline}`;
 const metaDescription = description ?? t.meta.description;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://beatrax.app").href;
+const origin = Astro.site ?? new URL("https://beatrax.app");
+const canonical = new URL(Astro.url.pathname, origin).href;
+
+// The same route without its locale segment, so each page points at its own
+// counterpart rather than at the homepage.
+const route = stripLocale(Astro.url.pathname);
+const alternates = LOCALES.map((l) => ({
+  locale: l,
+  href: new URL(localePath(l, route), origin).href,
+}));
+
+// One card per language: the image carries the headline, so an English card
+// on a Dutch page would be the wrong headline rather than a neutral one.
+const ogImage = new URL(locale === "nl" ? "/og-nl.png" : "/og.png", origin).href;
+
+// Sitewide identity. Page-specific types (the application itself, the FAQ)
+// are declared by the pages that own them.
+const identity = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${origin.origin}/#org`,
+      name: site.name,
+      url: origin.origin,
+      logo: new URL("/brand/logo-512.png", origin).href,
+      sameAs: [site.githubOrg],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${origin.origin}/#site`,
+      name: site.name,
+      url: origin.origin,
+      inLanguage: alternates.map((a) => (a.locale === "nl" ? "nl-NL" : "en-GB")),
+      publisher: { "@id": `${origin.origin}/#org` },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -34,19 +71,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://beatrax.app
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/brand/logo-512.png" />
 
-    {
-      LOCALES.map((l) => (
-        <link
-          rel="alternate"
-          hreflang={l}
-          href={new URL(localePath(l, "/"), Astro.site ?? "https://beatrax.app").href}
-        />
-      ))
-    }
+    {alternates.map((a) => <link rel="alternate" hreflang={a.locale} href={a.href} />)}
     <link
       rel="alternate"
       hreflang="x-default"
-      href={new URL("/", Astro.site ?? "https://beatrax.app").href}
+      href={new URL(localePath("en", route), origin).href}
     />
 
     <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
@@ -59,9 +88,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://beatrax.app
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content={locale === "nl" ? "nl_NL" : "en_GB"} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.meta.tagline} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
 
     <meta name="generator" content={Astro.generator} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(identity)} />
 
     {/* Apply the saved theme before first paint so there is no flash. */}
     <script is:inline>

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://beatrax.app/sitemap-index.xml
+
+# What beatrax is, how to run it, and how to contribute — written for
+# machines rather than reconstructed from the pages above.
+# https://beatrax.app/llms.txt

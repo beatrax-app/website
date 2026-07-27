@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]: beatrax
+  - generic [ref=e5]:
+    - heading [level=1] [ref=e6]:
+      - text: Every account.
+      - emphasis [ref=e7]: One calm picture.
+    - paragraph [ref=e8]: A local-first personal finance dashboard. Nothing leaves your machine.
+  - generic [ref=e9]:
+    - generic [ref=e10]: Free · source-available · no account
+    - generic [ref=e11]: beatrax.app

@@ -6,6 +6,7 @@ import Shot from "./Shot.astro";
 import { copyFor, localePath, type Locale } from "../i18n";
 import { featureCards, motionCards } from "../i18n/cards";
 import { site, features, motions, formats, platforms, wizardSteps } from "../data/site";
+import { getSiteData } from "../lib/github";
 
 interface Props {
   locale: Locale;
@@ -17,7 +18,31 @@ const cards = featureCards(locale);
 const motionCopy = motionCards(locale);
 
 const byGroup = (g: string) => features.filter((f) => f.group === g);
+
+// The application itself, described for search engines. The version and the
+// date come from the newest release rather than a number kept here, which
+// would be wrong the first time nobody remembered to change it.
+const data = await getSiteData();
+const latest = data.latestRelease;
+
+const application = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: site.name,
+  applicationCategory: "FinanceApplication",
+  operatingSystem: platforms.map((p) => p.label).join(", "),
+  url: Astro.site?.href ?? "https://beatrax.app",
+  downloadUrl: site.releases,
+  description: t.meta.description,
+  inLanguage: locale === "nl" ? "nl-NL" : "en-GB",
+  license: site.licenseUrl,
+  isAccessibleForFree: true,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+  ...(latest ? { softwareVersion: latest.tag, datePublished: latest.publishedAt } : {}),
+};
 ---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(application)} />
 
 {/* ── Hero ──────────────────────────────────────────────────────── */}
 <section class="hero">
