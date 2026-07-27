@@ -1,0 +1,20 @@
+# Spell-checking for the site.
+#
+# The Dutch half of the site is real Dutch prose and country names, which an
+# English dictionary reads as a wall of typos. Excluding those files is the only
+# honest option: adding every Dutch word to an allow-list would make the checker
+# useless for the English copy it exists to protect.
+[files]
+extend-exclude = [
+  "node_modules/",
+  "dist/",
+  ".astro/",
+  "package-lock.json",
+  "public/",
+  # Dutch translations and localised data.
+  "src/i18n/faq.ts",
+  "src/i18n/nl.ts",
+  "src/i18n/pages-nl.ts",
+  "src/i18n/cards.ts",
+  "src/data/coverage.ts",
+]
