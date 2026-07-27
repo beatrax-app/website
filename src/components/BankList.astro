@@ -1,0 +1,160 @@
+---
+// Per-country bank coverage, rendered from the spec's 90-appendix/bank-coverage.md.
+//
+// The verified/expected split is carried through deliberately rather than
+// flattened into one list: presenting an untested institution with the same
+// confidence as a tested one would be the dishonest version of this page.
+import { getBankCoverage } from "../lib/github";
+import { site } from "../data/site";
+import { copyFor, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const coverage = await getBankCoverage();
+const specUrl = `${site.specRepo}/blob/main/90-appendix/bank-coverage.md`;
+---
+
+{
+  coverage && (
+    <section class="bl">
+      <h2 class="bl__h">{t.banks.verifiedTitle}</h2>
+      <p class="bl__p">{t.banks.verifiedBody}</p>
+      <div class="bl__wrap">
+        <table class="bl__table">
+          <thead>
+            <tr>
+              <th scope="col">{t.banks.colBank}</th>
+              <th scope="col">{t.banks.colCountry}</th>
+              <th scope="col">{t.banks.colFormats}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {coverage.verified.map((b) => (
+              <tr>
+                <th scope="row">{b.name}</th>
+                <td>{b.country}</td>
+                <td class="mono">{b.formats}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="bl__h bl__h--spaced">{t.banks.expectedTitle}</h2>
+      <p class="bl__p">{t.banks.expectedBody}</p>
+      <div class="bl__regions">
+        {coverage.expected.map((r) => (
+          <div class="bl__region card">
+            <h3 class="bl__region-h">{r.region}</h3>
+            <ul class="bl__banks">
+              {r.banks.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="bl__note">
+        {t.banks.note}{" "}
+        <a href={specUrl} target="_blank" rel="noopener">
+          {t.banks.source}
+        </a>
+      </p>
+    </section>
+  )
+}
+
+<style>
+  .bl {
+    margin-top: var(--space-8);
+  }
+  .bl__h {
+    font-size: var(--size-display-l);
+  }
+  .bl__h--spaced {
+    margin-top: var(--space-8);
+  }
+  .bl__p {
+    margin-top: var(--space-4);
+    color: var(--text-muted);
+    max-width: 72ch;
+  }
+  .bl__wrap {
+    margin-top: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow-x: auto;
+  }
+  .bl__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    min-width: 520px;
+  }
+  .bl__table th,
+  .bl__table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+  .bl__table thead th {
+    background: var(--surface-2);
+    font-size: var(--size-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--text-faint);
+    font-weight: var(--weight-semibold);
+  }
+  .bl__table tbody th {
+    font-weight: var(--weight-semibold);
+    color: var(--text);
+  }
+  .bl__table td {
+    color: var(--text-muted);
+  }
+  .bl__table td.mono {
+    font-size: 0.8rem;
+  }
+  .bl__table tbody tr:last-child th,
+  .bl__table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  .bl__regions {
+    margin-top: var(--space-5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4);
+  }
+  .bl__region {
+    padding: var(--space-4) var(--space-5);
+  }
+  .bl__region-h {
+    font-size: 0.95rem;
+    letter-spacing: var(--tracking-tight);
+    color: var(--accent);
+  }
+  .bl__banks {
+    margin-top: var(--space-3);
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.3rem;
+  }
+  .bl__banks li {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+  }
+  .bl__note {
+    margin-top: var(--space-5);
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    max-width: 72ch;
+  }
+  .bl__note a {
+    color: var(--accent);
+  }
+</style>

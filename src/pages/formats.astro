@@ -1,11 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
 import DocPage from "../components/DocPage.astro";
+import BankList from "../components/BankList.astro";
 import { docFor } from "../i18n/pages";
 
 const doc = docFor("en", "formats")!;
 ---
 
 <Base locale="en" active="formats" title={doc.title} description={doc.lead}>
-  <DocPage doc={doc} />
+  <DocPage doc={doc}>
+    <BankList locale="en" />
+  </DocPage>
 </Base>

@@ -35,6 +35,10 @@ const ROADMAP_FILE = `${RAW}/${ORG}/spec/main/00-overview/roadmap.md`;
 // from the dependency list the specification actually documents.
 const COLOPHON_FILE = `${RAW}/${ORG}/spec/main/90-appendix/colophon.md`;
 
+// Bank coverage is a reference list that changes as people report what worked,
+// so it lives in the spec and is rendered here rather than duplicated.
+const BANKS_FILE = `${RAW}/${ORG}/spec/main/90-appendix/bank-coverage.md`;
+
 function headers(): HeadersInit {
   const h: Record<string, string> = {
     Accept: "application/vnd.github+json",
@@ -203,6 +207,78 @@ export function parseColophon(md: string): ColophonGroup[] {
 export async function getColophon(): Promise<ColophonGroup[]> {
   const md = await getText(COLOPHON_FILE);
   return md ? parseColophon(md) : [];
+}
+
+export interface VerifiedBank {
+  name: string;
+  country: string;
+  formats: string;
+}
+
+export interface BankCoverage {
+  verified: VerifiedBank[];
+  // Country name → the institutions listed under it. The spec writes these as
+  // a `###` heading followed by a middot-separated paragraph, which keeps the
+  // source readable as prose while still being parseable.
+  expected: { region: string; banks: string[] }[];
+}
+
+export function parseBankCoverage(md: string): BankCoverage {
+  const lines = md.split("\n");
+  const verified: VerifiedBank[] = [];
+  const expected: { region: string; banks: string[] }[] = [];
+
+  const vStart = lines.findIndex((l) => /^##\s+Verified/i.test(l));
+  const eStart = lines.findIndex((l) => /^##\s+Expected/i.test(l));
+  const eEnd = lines.findIndex((l, i) => i > eStart && /^##\s+The United Kingdom/i.test(l));
+
+  if (vStart !== -1) {
+    for (const raw of lines.slice(vStart, eStart === -1 ? lines.length : eStart)) {
+      const line = raw.trim();
+      if (!line.startsWith("|") || (line.match(/\|/g) ?? []).length < 4) continue;
+      const cells = line.slice(1, -1).split("|").map((c) => cleanCell(c));
+      if (cells.length < 3) continue;
+      if (/^[-:\s]*$/.test(cells[0])) continue;
+      if (/^institution$/i.test(cells[0])) continue;
+      verified.push({ name: cells[0], country: cells[1], formats: cells[2] });
+    }
+  }
+
+  if (eStart !== -1) {
+    let region: string | null = null;
+    let buffer: string[] = [];
+    const flush = () => {
+      if (region && buffer.length) {
+        expected.push({
+          region,
+          banks: buffer
+            .join(" ")
+            .split("·")
+            .map((b) => cleanCell(b))
+            .filter(Boolean),
+        });
+      }
+      buffer = [];
+    };
+    for (const raw of lines.slice(eStart, eEnd === -1 ? lines.length : eEnd)) {
+      const line = raw.trim();
+      if (line.startsWith("### ")) {
+        flush();
+        region = cleanCell(line.slice(4));
+        continue;
+      }
+      if (!region || !line || line.startsWith("#") || line.startsWith("|")) continue;
+      buffer.push(line);
+    }
+    flush();
+  }
+
+  return { verified, expected };
+}
+
+export async function getBankCoverage(): Promise<BankCoverage | null> {
+  const md = await getText(BANKS_FILE);
+  return md ? parseBankCoverage(md) : null;
 }
 
 // ── GitHub API ────────────────────────────────────────────────────

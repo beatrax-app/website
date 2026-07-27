@@ -139,6 +139,18 @@ export const nl: Copy = {
     snapshotNote: "Toont de laatst bekende momentopname.",
   },
 
+  banks: {
+    verifiedTitle: "Geverifieerd",
+    verifiedBody: "Vormen die beatrax expliciet herkent, met een adapter of headerprofiel en tests erachter. Worden automatisch herkend zodra je uploadt.",
+    expectedTitle: "Werkt naar verwachting",
+    expectedBody: "Deze instellingen bieden hun rekeninghouders CAMT.053 of MT940, en dat leest beatrax generiek. Ze zijn niet stuk voor stuk getest — gaat er één mis op een bestand dat aan de standaard voldoet, dan is dat een bug om te melden, geen niet-ondersteunde bank.",
+    colBank: "Instelling",
+    colCountry: "Land",
+    colFormats: "Formaten",
+    note: "De beschikbaarheid verschilt soms tussen particuliere en zakelijke producten. Correcties van wie het echt geprobeerd heeft zijn welkom — alleen zo verschuift een regel van verwacht naar geverifieerd.",
+    source: "De volledige lijst staat in de specificatie →",
+  },
+
   community: {
     statCountries: "landen met een corpus",
     statMerchants: "winkelpatronen",

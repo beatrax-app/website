@@ -134,6 +134,18 @@ export const en = {
     snapshotNote: "Showing the last known snapshot.",
   },
 
+  banks: {
+    verifiedTitle: "Verified",
+    verifiedBody: "Shapes beatrax recognises explicitly, with an adapter or header profile and tests behind them. Detected automatically when you upload.",
+    expectedTitle: "Expected to work",
+    expectedBody: "These institutions publish CAMT.053 or MT940 to account holders, which beatrax parses generically. They have not been individually tested — so if one of them fails on a conforming file, that is a bug worth reporting, not an unsupported bank.",
+    colBank: "Institution",
+    colCountry: "Country",
+    colFormats: "Formats",
+    note: "Availability sometimes differs between personal and business products. Corrections from anyone who has actually tried it are welcome — that is the only way an entry moves from expected to verified.",
+    source: "The full list lives in the specification →",
+  },
+
   community: {
     statCountries: "countries with a corpus",
     statMerchants: "merchant patterns",
