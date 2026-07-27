@@ -1,0 +1,22 @@
+# Area labels applied by the reusable auto-labeler, by changed path. The labels
+# are the canonical set in the spec (70-operations/labels.yml); this file only
+# maps this repo's paths onto them.
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ['**/*.md']
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**', 'astro.config.mjs', 'tsconfig.json', 'scripts/**']
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ['package.json', 'package-lock.json', 'renovate.json']
+
+brand:
+  - changed-files:
+      - any-glob-to-any-file: ['src/styles/**', 'public/**', 'src/layouts/**']
+
+area:ux:
+  - changed-files:
+      - any-glob-to-any-file: ['src/components/**', 'src/pages/**']
