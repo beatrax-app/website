@@ -1,0 +1,753 @@
+---
+// The whole front page, parameterised by locale. Both /  and /nl render this
+// same component so the two locales can never drift structurally — only the
+// dictionary changes.
+import Shot from "./Shot.astro";
+import { copyFor, localePath, type Locale } from "../i18n";
+import { featureCards, motionCards } from "../i18n/cards";
+import { site, features, motions, formats, platforms, wizardSteps } from "../data/site";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const cards = featureCards(locale);
+const motionCopy = motionCards(locale);
+
+const byGroup = (g: string) => features.filter((f) => f.group === g);
+---
+
+{/* ── Hero ──────────────────────────────────────────────────────── */}
+<section class="hero">
+  <div class="container hero__inner">
+    <p class="eyebrow">{t.hero.eyebrow}</p>
+    <h1 class="hero__title">
+      {t.hero.titleLead}<br />
+      <span class="hero__accent">{t.hero.titleAccent}</span>
+    </h1>
+    <p class="lead hero__lead">{t.hero.body}</p>
+
+    <div class="hero__cta">
+      <a class="btn btn--primary" href={site.releases} target="_blank" rel="noopener">
+        {t.hero.ctaPrimary}
+      </a>
+      <a class="btn btn--ghost" href="#how">{t.hero.ctaSecondary}</a>
+    </div>
+
+    <p class="hero__proof mono">{t.hero.proof}</p>
+  </div>
+
+  <div class="container hero__shot">
+    <Shot src="dashboard" alt={t.hero.shotAlt} eager={true} />
+  </div>
+</section>
+
+{/* ── v2 promo banner ───────────────────────────────────────────── */}
+<section class="section v2">
+  <div class="container">
+    <div class="v2__card">
+      <div class="v2__head">
+        <span class="v2__badge">{t.coming.badge}</span>
+        <span class="v2__ver mono">{t.coming.eyebrow}</span>
+      </div>
+      <h2 class="v2__title">{t.coming.title}</h2>
+      <p class="v2__body">{t.coming.body}</p>
+
+      <div class="v2__grid">
+        {
+          t.coming.items.map((c) => (
+            <article class:list={["v2__item", { "is-headline": c.headline }]}>
+              <h3 class="v2__item-h">{c.title}</h3>
+              <p class="v2__item-p">{c.body}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <a class="btn btn--primary v2__cta" href={`${localePath(locale, "/roadmap")}`}>
+        {t.coming.cta}
+      </a>
+    </div>
+  </div>
+</section>
+
+{/* ── Format strip ──────────────────────────────────────────────── */}
+<section class="strip">
+  <div class="container strip__inner">
+    {formats.map((f) => <span class="strip__chip mono">{f.label}</span>)}
+  </div>
+</section>
+
+{/* ── Promises ──────────────────────────────────────────────────── */}
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">{t.promises.eyebrow}</p>
+    <h2 class="sec__h">{t.promises.title}</h2>
+    <div class="promises">
+      {
+        t.promises.items.map((p) => (
+          <article class="promise card">
+            <h3 class="promise__title">{p.title}</h3>
+            <p class="promise__body">{p.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{/* ── Problem ───────────────────────────────────────────────────── */}
+<section class="section problem">
+  <div class="container problem__grid">
+    <div>
+      <p class="eyebrow">{t.problem.eyebrow}</p>
+      <h2 class="sec__h">{t.problem.title}</h2>
+      <p class="problem__p">{t.problem.body}</p>
+      <p class="problem__lead">{t.problem.lead}</p>
+      <ul class="problem__list">
+        {t.problem.points.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+    <Shot src="chains" alt={cards.chains.title} caption={cards.chains.title} />
+  </div>
+</section>
+
+{/* ── How it works ──────────────────────────────────────────────── */}
+<section class="section" id="how">
+  <div class="container">
+    <p class="eyebrow">{t.how.eyebrow}</p>
+    <h2 class="sec__h">{t.how.title}</h2>
+
+    <ol class="steps">
+      {
+        t.how.steps.map((s, i) => (
+          <li class="step card">
+            <span class="step__n mono">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="step__title">{s.title}</h3>
+            <p class="step__body">{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="wizard">
+      {
+        wizardSteps.map((w, i) => (
+          <img
+            class="wizard__frame"
+            src={`/shots/wizard/${w}.jpg`}
+            alt={`${t.how.steps[0].title} — ${i + 1}/9`}
+            width="1512"
+            height="740"
+            loading="lazy"
+            decoding="async"
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{/* ── Motion ────────────────────────────────────────────────────── */}
+<section class="section motion">
+  <div class="container">
+    <div class="motion__grid">
+      {
+        motions.map((m) => (
+          <figure class="motion__item card">
+            <img
+              class="motion__img"
+              src={`/shots/gif/${m.gif}.gif`}
+              alt={motionCopy[m.key].title}
+              width="1512"
+              height="740"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption class="motion__cap">
+              <b>{motionCopy[m.key].title}</b>
+              <span>{motionCopy[m.key].body}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{/* ── Features ──────────────────────────────────────────────────── */}
+<section class="section" id="features">
+  <div class="container">
+    <p class="eyebrow">{t.features.eyebrow}</p>
+    <h2 class="sec__h">{t.features.title}</h2>
+    <p class="sec__lead">{t.features.lead}</p>
+
+    {
+      t.features.groups.map((g) => (
+        <div class="fgroup">
+          <h3 class="fgroup__h">{g.label}</h3>
+          <div class="fgrid">
+            {byGroup(g.key).map((f) => (
+              <article class:list={["fcard card", { "is-wide": f.wide }]}>
+                <img
+                  class="fcard__img"
+                  src={`/shots/${f.shot}.jpg`}
+                  alt={cards[f.key].title}
+                  width="1512"
+                  height="740"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="fcard__body">
+                  <h4 class="fcard__title">{cards[f.key].title}</h4>
+                  <p class="fcard__text">{cards[f.key].body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+{/* ── Privacy ───────────────────────────────────────────────────── */}
+<section class="section privacy" id="privacy">
+  <div class="container">
+    <p class="eyebrow">{t.privacy.eyebrow}</p>
+    <h2 class="sec__h">{t.privacy.title}</h2>
+    <p class="sec__lead">{t.privacy.body}</p>
+    <div class="privacy__grid">
+      {
+        t.privacy.points.map((p) => (
+          <article class="privacy__card card">
+            <h3 class="privacy__title">{p.title}</h3>
+            <p class="privacy__body">{p.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{/* ── Download ──────────────────────────────────────────────────── */}
+<section class="section" id="download">
+  <div class="container dl">
+    <p class="eyebrow">{t.download.eyebrow}</p>
+    <h2 class="sec__h dl__h">{t.download.title}</h2>
+    <p class="sec__lead dl__lead">{t.download.body}</p>
+    <div class="dl__row">
+      {
+        platforms.map((p) => (
+          <a class="dl__card card" href={site.releases} target="_blank" rel="noopener">
+            <b>{p.label}</b>
+            <span class="mono">{p.ext}</span>
+          </a>
+        ))
+      }
+    </div>
+    <p class="dl__note">{t.download.note}</p>
+  </div>
+</section>
+
+{/* ── CTA ───────────────────────────────────────────────────────── */}
+<section class="section">
+  <div class="container cta">
+    <h2 class="cta__h">{t.cta.title}</h2>
+    <p class="cta__p">{t.cta.body}</p>
+    <div class="cta__row">
+      <a class="btn btn--primary" href={site.repo} target="_blank" rel="noopener">{t.cta.repo}</a>
+      <a class="btn btn--ghost" href={site.specRepo} target="_blank" rel="noopener">{t.cta.spec}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-top: var(--space-9);
+    background:
+      radial-gradient(120% 70% at 50% -10%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 62%);
+  }
+  .hero__inner {
+    text-align: center;
+    max-width: 900px;
+  }
+  .hero__title {
+    font-size: var(--size-hero);
+    margin-top: var(--space-4);
+  }
+  .hero__accent {
+    color: var(--accent);
+  }
+  .hero__lead {
+    margin: var(--space-5) auto 0;
+    max-width: 62ch;
+  }
+  .hero__cta {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-6);
+  }
+  .hero__proof {
+    margin-top: var(--space-5);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .hero__shot {
+    margin-top: var(--space-7);
+    max-width: 1080px;
+  }
+
+  /* v2 promo */
+  .v2__card {
+    border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+    border-radius: var(--radius-xl);
+    padding: var(--space-7);
+    background:
+      radial-gradient(90% 140% at 12% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+      var(--surface);
+  }
+  .v2__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .v2__badge {
+    font-size: var(--size-eyebrow);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--bx-ink);
+    background: var(--accent);
+    padding: 0.25em 0.7em;
+    border-radius: var(--radius-pill);
+  }
+  .v2__ver {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .v2__title {
+    font-size: var(--size-display-l);
+    margin-top: var(--space-4);
+    max-width: 20ch;
+  }
+  .v2__body {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 62ch;
+  }
+  .v2__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .v2__item {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+  /* The sync work is the reason this release is called v2.0, so it gets the
+     full width of the first row rather than competing as one tile of eight. */
+  .v2__item.is-headline {
+    grid-column: 1 / -1;
+    border-top-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .v2__item.is-headline .v2__item-h {
+    font-size: 1.2rem;
+    color: var(--accent);
+  }
+  .v2__item.is-headline .v2__item-p {
+    max-width: 78ch;
+  }
+  .v2__item-h {
+    font-size: 0.98rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .v2__item-p {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  .v2__cta {
+    margin-top: var(--space-6);
+  }
+
+  /* Format strip */
+  .strip {
+    border-block: 1px solid var(--border);
+    background: var(--bg-tint);
+    padding-block: var(--space-4);
+    margin-top: var(--space-8);
+  }
+  .strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
+  .strip__chip {
+    font-size: 0.76rem;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.28em 0.85em;
+  }
+
+  /* Promises */
+  .promises {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .promise {
+    padding: var(--space-6);
+  }
+  .promise__title {
+    font-size: 1.25rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .promise__body {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    line-height: 1.62;
+  }
+
+  /* Problem */
+  .problem__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  .problem__grid > * {
+    min-width: 0;
+  }
+  .problem__p {
+    margin-top: var(--space-4);
+    color: var(--text-muted);
+  }
+  .problem__lead {
+    margin-top: var(--space-4);
+    font-weight: var(--weight-semibold);
+    font-size: 1.08rem;
+  }
+  .problem__list {
+    margin-top: var(--space-4);
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-2);
+  }
+  .problem__list li {
+    padding-left: 1.5rem;
+    position: relative;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .problem__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* Steps */
+  .steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .step {
+    padding: var(--space-5);
+  }
+  .step__n {
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .step__title {
+    margin-top: var(--space-3);
+    font-size: 1.05rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .step__body {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* Wizard filmstrip */
+  .wizard {
+    margin-top: var(--space-6);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 62%;
+    gap: var(--space-4);
+    overflow-x: auto;
+    padding-bottom: var(--space-3);
+    scroll-snap-type: x mandatory;
+  }
+  .wizard__frame {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    scroll-snap-align: center;
+  }
+  @media (min-width: 900px) {
+    .wizard {
+      grid-auto-columns: 38%;
+    }
+  }
+
+  /* Motion */
+  .motion__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  .motion__item {
+    overflow: hidden;
+  }
+  .motion__img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .motion__cap {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.9rem;
+  }
+  .motion__cap span {
+    color: var(--text-muted);
+  }
+
+  /* Features */
+  .fgroup {
+    margin-top: var(--space-8);
+  }
+  .fgroup__h {
+    font-size: var(--size-display-m);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .fgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+  .fcard {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.16s ease, transform 0.16s ease;
+  }
+  .fcard:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+  .fcard.is-wide {
+    grid-column: span 3;
+    flex-direction: row;
+  }
+  .fcard.is-wide .fcard__img {
+    width: 62%;
+    border-bottom: none;
+    border-inline-end: 1px solid var(--border);
+  }
+  .fcard.is-wide .fcard__body {
+    align-self: center;
+  }
+  .fcard__img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .fcard__body {
+    padding: var(--space-4);
+  }
+  .fcard__title {
+    font-size: 1rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .fcard__text {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.58;
+  }
+
+  /* Privacy */
+  .privacy {
+    background: var(--bg-tint);
+    border-block: 1px solid var(--border);
+  }
+  .privacy__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .privacy__card {
+    padding: var(--space-5);
+  }
+  .privacy__title {
+    font-size: 1.05rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .privacy__body {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  /* Download */
+  .dl {
+    text-align: center;
+  }
+  .dl__h,
+  .dl__lead {
+    margin-inline: auto;
+  }
+  .dl__row {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-6);
+  }
+  .dl__card {
+    padding: var(--space-5) var(--space-7);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 190px;
+    transition: border-color 0.16s ease, transform 0.16s ease;
+  }
+  .dl__card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .dl__card span {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .dl__note {
+    margin-top: var(--space-5);
+    font-size: 0.82rem;
+    color: var(--text-faint);
+  }
+
+  /* Coming next */
+  .coming__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .coming__card {
+    padding: var(--space-5);
+    border-style: dashed;
+  }
+  .coming__title {
+    font-size: 1.1rem;
+    letter-spacing: var(--tracking-tight);
+  }
+  .coming__body {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta {
+    text-align: center;
+    padding: var(--space-8) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(90% 130% at 50% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 62%),
+      var(--surface);
+  }
+  .cta__h {
+    font-size: var(--size-display-l);
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  .cta__p {
+    margin: var(--space-4) auto 0;
+    max-width: 56ch;
+    color: var(--text-muted);
+  }
+  .cta__row {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--space-6);
+  }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .promises,
+    .privacy__grid,
+    .fgrid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .fcard.is-wide {
+      grid-column: span 2;
+    }
+    .steps,
+    .v2__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 760px) {
+    .problem__grid,
+    .promises,
+    .privacy__grid,
+    .fgrid,
+    .steps,
+    .motion__grid {
+      grid-template-columns: 1fr;
+    }
+    .v2__grid {
+      grid-template-columns: 1fr;
+    }
+    .fcard.is-wide {
+      grid-column: span 1;
+      flex-direction: column;
+    }
+    .fcard.is-wide .fcard__img {
+      width: 100%;
+      border-inline-end: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .wizard {
+      grid-auto-columns: 85%;
+    }
+  }
+</style>

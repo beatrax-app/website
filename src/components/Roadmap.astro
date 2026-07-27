@@ -1,0 +1,331 @@
+---
+// The roadmap, rendered from the build-time motor. Both locales render this
+// same component; the chrome is localised, the milestone titles are not —
+// they name releases and deliverables that the spec defines in English, and
+// inventing Dutch names for them would put this page out of step with the
+// repository it is supposed to mirror.
+import ProgressBar from "./ProgressBar.astro";
+import StatusPill from "./StatusPill.astro";
+import { getSiteData } from "../lib/github";
+import { site } from "../data/site";
+import { copyFor, type Locale } from "../i18n";
+import { statusGlyph, releaseDate } from "../lib/format";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const data = await getSiteData();
+---
+
+<section class="section rm-head">
+  <div class="container">
+    <p class="eyebrow">{t.status.eyebrow}</p>
+    <h1 class="rm-head__h">{t.roadmap.title}</h1>
+    <p class="lead rm-head__lead">{t.roadmap.lead}</p>
+
+    <div class="rm-bar card">
+      <div class="rm-bar__top">
+        <span class="rm-bar__label">{t.roadmap.overall}</span>
+        <span class="rm-bar__n mono">
+          {data.progress.doneMilestones}/{data.progress.totalMilestones} {t.roadmap.milestones}
+          · {data.progress.doneDeliverables}/{data.progress.totalDeliverables} {t.roadmap.deliverables}
+        </span>
+      </div>
+      <ProgressBar pct={data.progress.pct} status="partial" />
+      <p class="rm-bar__note">
+        {data.live ? t.status.liveNote : t.status.snapshotNote}
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section rm-tl-sec">
+  <div class="container">
+    <ol class="tl">
+      {
+        data.milestones.map((m) => (
+          <li class:list={["tl__item", `is-${m.status}`]} id={m.id}>
+            <div class="tl__rail">
+              <span class="tl__node" aria-hidden="true">{statusGlyph(m.status)}</span>
+            </div>
+            <article class="tl__card card">
+              <header class="tl__head">
+                <div class="tl__title">
+                  <span class="tl__id mono">{m.id}</span>
+                  <h2 class="tl__name">{m.title}</h2>
+                </div>
+                <StatusPill status={m.status} locale={locale} />
+              </header>
+
+              <p class="tl__blurb">{m.blurb}</p>
+
+              <div class="tl__meta">
+                <ProgressBar pct={m.pct} status={m.status} size="sm" />
+                <span class="tl__date">
+                  {
+                    m.shippedAt
+                      ? `${t.roadmap.releasedOn} ${releaseDate(m.shippedAt, locale)}`
+                      : t.roadmap.unreleased
+                  }
+                </span>
+              </div>
+
+              <ul class="tl__dels">
+                {m.deliverables.map((d) => (
+                  <li class:list={["del", `del--${d.status}`]}>
+                    <span class="del__glyph" aria-hidden="true">{statusGlyph(d.status)}</span>
+                    <span class="del__title">{d.title}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="rm-repos__h">{t.roadmap.reposTitle}</h2>
+    <div class="rm-repos">
+      {
+        data.repos.map((r) => (
+          <a class="repo card" href={r.url} target="_blank" rel="noopener">
+            <div class="repo__top">
+              <b class="repo__name mono">{r.name}</b>
+              <span class="pill">{r.role}</span>
+            </div>
+            <p class="repo__desc">{r.description}</p>
+            <p class="repo__meta mono">
+              {r.language}
+              {r.stars > 0 && <span> · ★ {r.stars}</span>}
+            </p>
+          </a>
+        ))
+      }
+    </div>
+    <p class="rm-source">
+      <a href={`${site.specRepo}/blob/main/00-overview/roadmap.md`} target="_blank" rel="noopener">
+        {t.roadmap.source} →
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .rm-head {
+    padding-bottom: var(--space-5);
+  }
+  .rm-head__h {
+    font-size: var(--size-display-xl);
+    margin-top: var(--space-3);
+  }
+  .rm-head__lead {
+    margin-top: var(--space-4);
+    max-width: 62ch;
+  }
+  .rm-bar {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+  }
+  .rm-bar__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+  }
+  .rm-bar__label {
+    font-weight: var(--weight-semibold);
+  }
+  .rm-bar__n {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .rm-bar__note {
+    margin-top: var(--space-3);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  /* Timeline */
+  .tl {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-5);
+  }
+  .tl__item {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: var(--space-4);
+  }
+  .tl__rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tl__node {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+  .is-done .tl__node {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    background: var(--accent-bg);
+  }
+  .is-partial .tl__node {
+    color: var(--info);
+    border-color: color-mix(in srgb, var(--info) 45%, transparent);
+    background: var(--info-bg);
+  }
+  .tl__rail::after {
+    content: "";
+    flex: 1;
+    width: 1px;
+    background: var(--border);
+    margin-top: var(--space-2);
+  }
+  .tl__item:last-child .tl__rail::after {
+    display: none;
+  }
+  .tl__card {
+    padding: var(--space-5);
+  }
+  .tl__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .tl__title {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .tl__id {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .tl__name {
+    font-size: var(--size-display-m);
+  }
+  .tl__blurb {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 68ch;
+  }
+  .tl__meta {
+    display: grid;
+    grid-template-columns: minmax(160px, 260px) auto;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .tl__date {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .tl__dels {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px dashed var(--border);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.45rem var(--space-4);
+  }
+  .del {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .del__glyph {
+    font-size: 0.6rem;
+    color: var(--text-faint);
+  }
+  .del--done .del__glyph {
+    color: var(--accent);
+  }
+  .del--partial .del__glyph {
+    color: var(--info);
+  }
+  .del--todo .del__title {
+    color: var(--text-faint);
+  }
+
+  /* Repos */
+  .rm-repos__h {
+    font-size: var(--size-display-l);
+  }
+  .rm-repos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+  .repo {
+    padding: var(--space-5);
+    transition: border-color 0.16s ease, transform 0.16s ease;
+  }
+  .repo:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .repo__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .repo__name {
+    font-size: 1rem;
+  }
+  .repo__desc {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .repo__meta {
+    margin-top: var(--space-3);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .rm-source {
+    margin-top: var(--space-6);
+    font-size: 0.85rem;
+  }
+  .rm-source a:hover {
+    color: var(--accent);
+  }
+
+  @media (max-width: 800px) {
+    .tl__dels,
+    .rm-repos {
+      grid-template-columns: 1fr;
+    }
+    .tl__meta {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

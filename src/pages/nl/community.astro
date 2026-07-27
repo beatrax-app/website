@@ -1,0 +1,14 @@
+---
+import Base from "../../layouts/Base.astro";
+import DocPage from "../../components/DocPage.astro";
+import CoverageTable from "../../components/CoverageTable.astro";
+import { docFor } from "../../i18n/pages";
+
+const doc = docFor("nl", "community")!;
+---
+
+<Base locale="nl" active="community" title={doc.title} description={doc.lead}>
+  <DocPage doc={doc}>
+    <CoverageTable locale="nl" />
+  </DocPage>
+</Base>

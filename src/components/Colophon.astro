@@ -1,0 +1,139 @@
+---
+// Rendered from the spec's 90-appendix/colophon.md at build time. Nothing is
+// duplicated here — if the list is wrong, the spec is wrong, and fixing it
+// there fixes it everywhere.
+//
+// When the spec is unreachable the page falls back to a link rather than a
+// stale copy: a credits list that silently goes out of date is worse than one
+// that sends you to the source.
+import { getColophon } from "../lib/github";
+import { site } from "../data/site";
+import { copyFor, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const groups = await getColophon();
+const specUrl = `${site.specRepo}/blob/main/90-appendix/colophon.md`;
+---
+
+<article class="doc">
+  <header class="section doc__head">
+    <div class="container">
+      <p class="eyebrow">{t.colophon.eyebrow}</p>
+      <h1 class="doc__h">{t.colophon.title}</h1>
+      <p class="lead doc__lead">{t.colophon.lead}</p>
+    </div>
+  </header>
+
+  <div class="container col__body">
+    {
+      groups.length === 0 ? (
+        <p class="col__empty">
+          {t.colophon.unavailable}{" "}
+          <a href={specUrl} target="_blank" rel="noopener">
+            {t.colophon.readInSpec}
+          </a>
+        </p>
+      ) : (
+        groups.map((g) => (
+          <section class="col__group">
+            <h2 class="col__h">{g.heading}</h2>
+            <dl class="col__list">
+              {g.entries.map((e) => (
+                <div class="col__row">
+                  <dt class="col__name">{e.name}</dt>
+                  <dd class="col__desc">{e.body}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))
+      )
+    }
+
+    <p class="col__source">
+      <a href={specUrl} target="_blank" rel="noopener">{t.colophon.source} →</a>
+    </p>
+  </div>
+</article>
+
+<style>
+  .doc__head {
+    padding-bottom: var(--space-4);
+    background: radial-gradient(
+      110% 60% at 20% -20%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 60%
+    );
+  }
+  .doc__h {
+    font-size: var(--size-display-xl);
+    margin-top: var(--space-3);
+    max-width: 22ch;
+  }
+  .doc__lead {
+    margin-top: var(--space-4);
+    max-width: 62ch;
+  }
+  .col__body {
+    padding-bottom: var(--space-9);
+  }
+  .col__group {
+    margin-top: var(--space-8);
+  }
+  .col__h {
+    font-size: var(--size-display-m);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .col__list {
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+  .col__row {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) 1fr;
+    gap: var(--space-5);
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .col__row:last-child {
+    border-bottom: none;
+  }
+  .col__name {
+    font-weight: var(--weight-semibold);
+    color: var(--accent);
+    letter-spacing: var(--tracking-tight);
+  }
+  .col__desc {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+  .col__empty {
+    margin-top: var(--space-7);
+    color: var(--text-muted);
+  }
+  .col__empty a,
+  .col__source a {
+    color: var(--accent);
+  }
+  .col__source {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 720px) {
+    .col__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+// A screenshot in a window chrome. The frame is deliberately minimal — a
+// title bar with traffic lights and nothing else — so the app's own UI is
+// what reads, rather than the decoration around it.
+//
+// Every screenshot is 1512px wide, captured from the running app, so the
+// intrinsic size is fixed and can be declared to reserve layout space and
+// avoid shift while the image decodes.
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  eager?: boolean;
+  gif?: boolean;
+}
+
+const { src, alt, caption, eager = false, gif = false } = Astro.props;
+const ext = gif ? "gif" : "jpg";
+const dir = gif ? "/shots/gif" : "/shots";
+const height = gif ? 740 : 740;
+---
+
+<figure class="shot">
+  <div class="shot__chrome">
+    <span class="shot__dots" aria-hidden="true">
+      <i></i><i></i><i></i>
+    </span>
+  </div>
+  <img
+    class="shot__img"
+    src={`${dir}/${src}.${ext}`}
+    alt={alt}
+    width="1512"
+    height={height}
+    loading={eager ? "eager" : "lazy"}
+    decoding={eager ? "sync" : "async"}
+  />
+  {caption && <figcaption class="shot__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .shot {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-lift);
+  }
+  .shot__chrome {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-3);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .shot__dots {
+    display: flex;
+    gap: 6px;
+  }
+  .shot__dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .shot__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .shot__caption {
+    padding: var(--space-3) var(--space-4);
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    border-top: 1px solid var(--border);
+  }
+</style>

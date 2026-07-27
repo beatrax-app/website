@@ -1,0 +1,49 @@
+---
+import { statusGlyph, statusLabel } from "../lib/format";
+import type { DeliverableStatus } from "../lib/types";
+import type { Locale } from "../i18n";
+
+interface Props {
+  status: DeliverableStatus;
+  locale: Locale;
+  text?: string;
+}
+const { status, locale, text } = Astro.props;
+---
+
+<span class:list={["spill", `spill--${status}`]}>
+  <span class="spill__glyph" aria-hidden="true">{statusGlyph(status)}</span>
+  {text ?? statusLabel(status, locale)}
+</span>
+
+<style>
+  .spill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: var(--size-caption);
+    font-weight: var(--weight-semibold);
+    padding: 0.2em 0.75em;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .spill__glyph {
+    font-size: 0.65em;
+  }
+  .spill--done {
+    color: var(--accent);
+    background: var(--accent-bg);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .spill--partial {
+    color: var(--info);
+    background: var(--info-bg);
+    border-color: color-mix(in srgb, var(--info) 35%, transparent);
+  }
+  .spill--todo {
+    color: var(--text-faint);
+    background: var(--surface-2);
+    border-color: var(--border);
+  }
+</style>

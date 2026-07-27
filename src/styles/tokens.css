@@ -1,0 +1,160 @@
+/*
+ * Design tokens — the single source of truth for the site's look.
+ *
+ * The primitives are lifted verbatim from the beatrax app's own theme
+ * (resources/css/app.css in the product repo), so the marketing site and the
+ * product render from one palette. The app ships light and dark; the site
+ * leads with dark because that is how the screenshots were captured and how
+ * the product is most recognisable. Do not hand-pick colours here — change
+ * the app's theme and mirror the value across.
+ *
+ *   Primitives   raw app values, theme-independent   (--bx-slate-950 …)
+ *   Semantic     role-based, swapped per theme       (--bg, --text, --accent …)
+ */
+
+:root {
+  /* ── Primitives — surfaces (app dark theme) ────────────────────── */
+  --bx-ink: #020617;
+  --bx-ink-raised: #0b1220;
+  --bx-slate-900: #0f172a;
+  --bx-slate-800: #1e293b;
+  --bx-slate-700: #334155;
+  --bx-slate-500: #64748b;
+  --bx-slate-400: #94a3b8;
+  --bx-slate-100: #f1f5f9;
+  --bx-white: #f8fafc;
+
+  /* ── Primitives — status (app semantic colours) ────────────────── */
+  --bx-emerald: #10b981;
+  --bx-emerald-deep: #059669;
+  --bx-emerald-bright: #34d399;
+  --bx-amber: #f59e0b;
+  --bx-rose: #f43f5e;
+  --bx-blue: #60a5fa;
+
+  /* ── Type ──────────────────────────────────────────────────────── */
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  --weight-display: 720;
+  --weight-semibold: 600;
+  --weight-body: 400;
+  --tracking-display: -0.035em;
+  --tracking-tight: -0.018em;
+  --tracking-eyebrow: 0.14em;
+
+  --size-hero: clamp(2.4rem, 4.2vw + 1rem, 4.1rem);
+  --size-display-xl: clamp(2rem, 3vw + 0.9rem, 3rem);
+  --size-display-l: clamp(1.6rem, 1.8vw + 0.9rem, 2.15rem);
+  --size-display-m: clamp(1.2rem, 0.8vw + 0.9rem, 1.5rem);
+  --size-body: 1rem;
+  --size-caption: 0.8125rem;
+  --size-eyebrow: 0.72rem;
+
+  /* ── Space — 4px base ──────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3.5rem;
+  --space-9: 5rem;
+  --space-10: 7rem;
+
+  /* ── Radius & elevation — app radii ────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-pill: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.4);
+  --shadow-lift: 0 2px 6px rgba(2, 6, 23, 0.45), 0 12px 32px rgba(2, 6, 23, 0.35);
+  --shadow-pop: 0 6px 16px rgba(2, 6, 23, 0.5), 0 24px 64px rgba(2, 6, 23, 0.45);
+
+  --width-page: 1180px;
+  --width-prose: 680px;
+  --nav-h: 64px;
+
+  /* ── Semantic — INK (dark) is the default ──────────────────────── */
+  --bg: var(--bx-ink);
+  --bg-tint: var(--bx-ink-raised);
+  --surface: var(--bx-ink-raised);
+  --surface-2: var(--bx-slate-800);
+  --surface-raised: var(--bx-slate-900);
+  --border: var(--bx-slate-800);
+  --border-strong: var(--bx-slate-700);
+  --text: var(--bx-slate-100);
+  --text-muted: var(--bx-slate-400);
+  --text-faint: var(--bx-slate-500);
+  --accent: var(--bx-emerald);
+  --accent-strong: var(--bx-emerald-bright);
+  --accent-bg: rgba(16, 185, 129, 0.12);
+  --warn: var(--bx-amber);
+  --warn-bg: rgba(245, 158, 11, 0.12);
+  --danger: var(--bx-rose);
+  --danger-bg: rgba(244, 63, 94, 0.12);
+  --info: var(--bx-blue);
+  --info-bg: rgba(96, 165, 250, 0.12);
+
+  color-scheme: dark;
+}
+
+/* ── Semantic — PAPER (light), mirroring the app's light theme ───── */
+:root[data-theme="paper"] {
+  --bg: #ffffff;
+  --bg-tint: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-raised: #ffffff;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-faint: #94a3b8;
+  --accent: var(--bx-emerald-deep);
+  --accent-strong: #047857;
+  --accent-bg: #d1fae5;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --danger: #be123c;
+  --danger-bg: #ffe4e6;
+  --info: #2563eb;
+  --info-bg: #dbeafe;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-lift: 0 2px 5px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.1), 0 18px 48px rgba(15, 23, 42, 0.08);
+
+  color-scheme: light;
+}
+
+/* Honour an explicit OS light preference until the user flips the toggle. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="ink"]) {
+    --bg: #ffffff;
+    --bg-tint: #f8fafc;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --surface-raised: #ffffff;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-faint: #94a3b8;
+    --accent: var(--bx-emerald-deep);
+    --accent-strong: #047857;
+    --accent-bg: #d1fae5;
+    --warn: #b45309;
+    --warn-bg: #fef3c7;
+    --danger: #be123c;
+    --danger-bg: #ffe4e6;
+    --info: #2563eb;
+    --info-bg: #dbeafe;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --shadow-lift: 0 2px 5px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+    --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.1), 0 18px 48px rgba(15, 23, 42, 0.08);
+    color-scheme: light;
+  }
+}

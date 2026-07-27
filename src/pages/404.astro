@@ -1,0 +1,45 @@
+---
+// A single 404 for both locales. Static hosts serve one error document for the
+// whole site, so this page cannot know which language tree the visitor came
+// from — it leads with English and offers the Dutch front page alongside.
+import Base from "../layouts/Base.astro";
+import { copyFor } from "../i18n";
+
+const en = copyFor("en");
+const nl = copyFor("nl");
+---
+
+<Base locale="en" title="404">
+  <section class="section nf">
+    <div class="container">
+      <p class="eyebrow">404</p>
+      <h1 class="nf__h">{en.notFound.title}</h1>
+      <p class="lead nf__p">{en.notFound.body}</p>
+      <div class="nf__row">
+        <a class="btn btn--primary" href="/">{en.notFound.cta}</a>
+        <a class="btn btn--ghost" href="/nl" lang="nl">{nl.notFound.cta}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-block: var(--space-10);
+    text-align: center;
+  }
+  .nf__h {
+    font-size: var(--size-display-xl);
+    margin-top: var(--space-3);
+  }
+  .nf__p {
+    margin: var(--space-4) auto 0;
+    max-width: 46ch;
+  }
+  .nf__row {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: center;
+    margin-top: var(--space-6);
+  }
+</style>

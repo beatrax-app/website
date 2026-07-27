@@ -1,0 +1,154 @@
+---
+// Community-corpus coverage, one row per country. The country set comes from
+// the product repo's corpus directory at build time; the pattern counts come
+// from the committed snapshot. Sorted by merchant depth so the countries most
+// in need of contributions are visible rather than buried alphabetically.
+import { getSiteData } from "../lib/github";
+import { copyFor, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const data = await getSiteData();
+
+const rows = [...data.coverage].sort((a, b) => b.merchants - a.merchants);
+const totalMerchants = rows.reduce((n, r) => n + r.merchants, 0);
+const totalGov = rows.reduce((n, r) => n + r.government, 0);
+---
+
+<section class="cov">
+  <div class="cov__stats">
+    <div class="cov__stat">
+      <b class="mono">{rows.length}</b>
+      <span>{t.community.statCountries}</span>
+    </div>
+    <div class="cov__stat">
+      <b class="mono">{totalMerchants}</b>
+      <span>{t.community.statMerchants}</span>
+    </div>
+    <div class="cov__stat">
+      <b class="mono">{totalGov}</b>
+      <span>{t.community.statGovernment}</span>
+    </div>
+  </div>
+
+  <div class="cov__wrap">
+    <table class="cov__table">
+      <thead>
+        <tr>
+          <th scope="col">{t.community.colCountry}</th>
+          <th scope="col">{t.community.colMerchants}</th>
+          <th scope="col">{t.community.colGovernment}</th>
+          <th scope="col">{t.community.colBankFees}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r) => (
+            <tr>
+              <th scope="row">
+                <span class="cov__code mono">{r.code.toUpperCase()}</span>
+                {locale === "nl" ? r.nameNl : r.name}
+              </th>
+              <td class="mono">{r.merchants || "—"}</td>
+              <td class="mono">{r.government || "—"}</td>
+              <td class="mono">{r.bankFees || "—"}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p class="cov__note">{t.community.tableNote}</p>
+</section>
+
+<style>
+  .cov {
+    margin-top: var(--space-6);
+  }
+  .cov__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  .cov__stat {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .cov__stat b {
+    font-size: 1.6rem;
+    color: var(--accent);
+  }
+  .cov__stat span {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .cov__wrap {
+    margin-top: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: auto;
+    max-height: 520px;
+  }
+  .cov__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 460px;
+  }
+  .cov__table th,
+  .cov__table td {
+    text-align: left;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+  .cov__table thead th {
+    position: sticky;
+    top: 0;
+    background: var(--surface-2);
+    font-size: var(--size-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--text-faint);
+    font-weight: var(--weight-semibold);
+    z-index: 1;
+  }
+  .cov__table tbody th {
+    font-weight: var(--weight-body);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .cov__code {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.05em 0.4em;
+    min-width: 2.6em;
+    text-align: center;
+  }
+  .cov__table td {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .cov__note {
+    margin-top: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+  }
+  @media (max-width: 640px) {
+    .cov__stats {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

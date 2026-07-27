@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import Roadmap from "../../components/Roadmap.astro";
+import { copyFor } from "../../i18n";
+
+const t = copyFor("nl");
+---
+
+<Base locale="nl" active="roadmap" title={t.roadmap.title} description={t.roadmap.lead}>
+  <Roadmap locale="nl" />
+</Base>
