@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import Changelog from "../../components/Changelog.astro";
+import { copyFor } from "../../i18n";
+
+const t = copyFor("nl");
+---
+
+<Base locale="nl" active="changelog" title={t.changelog.title} description={t.changelog.lead}>
+  <Changelog locale="nl" />
+</Base>

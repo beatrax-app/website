@@ -23,7 +23,10 @@ export const nl: Copy = {
     formats: "Banken & formaten",
     licence: "Open source",
     community: "Community",
+    faq: "FAQ",
     privacy: "Privacy",
+    contribute: "Bijdragen",
+    changelog: "Changelog",
     roadmap: "Roadmap",
     download: "Downloaden",
     skip: "Naar de inhoud",
@@ -226,6 +229,78 @@ export const nl: Copy = {
     repos: "Repositories",
     product: "Product",
     org: "Organisatie",
+  },
+
+  contribute: {
+    eyebrow: "Bijdragen",
+    title: "Het project wordt beter met jou erbij.",
+    lead: "beatrax wordt in het openbaar gebouwd onder een licentie met ethische gebruiksclausules. Je kunt elke regel lezen, het zelf draaien en het aanpassen. Deze pagina vertelt wat je concreet doet — de regels hieronder komen rechtstreeks uit de specificatie, dus het zijn dezelfde regels die een reviewer toepast.",
+
+    routesTitle: "Vier manieren om in te stappen, oplopend in moeite.",
+    routesBody: "Niet elke waardevolle bijdrage is code. De eerste op deze lijst is wat het product het hardst nodig heeft en vraagt geen enkele lokale installatie.",
+    routes: {
+      corpus: {
+        title: "Vul de gemeenschapscorpus aan",
+        body: "Simpele YAML die de cryptische omschrijvingen van je bank koppelt aan namen die mensen herkennen. Geen code, geen toolchain, geen installatie — één bestand per land, in de browser te bewerken.",
+        cta: "Hoe de corpus werkt",
+      },
+      report: {
+        title: "Meld wat er misging",
+        body: "Een afschrift dat verkeerd inleest, een totaal dat niet klopt, een scherm dat op je telefoon rare dingen doet. Beschrijf de vorm van het probleem; stuur nooit een echt afschrift mee.",
+        cta: "Open een issue",
+      },
+      spec: {
+        title: "Wijzig de specificatie",
+        body: "Gedrag wordt gespecificeerd voordat het geschreven wordt. Wil je dat beatrax iets anders doet, dan landt de specificatiewijziging eerst en verwijst de code ernaar.",
+        cta: "Lees het wijzigingsproces",
+      },
+      code: {
+        title: "Schrijf de code",
+        body: "Pak openstaand werk op of breng je eigen idee mee. Bij grote wijzigingen loont het om vooraf de vorm af te stemmen — dat is goedkoper dan achteraf herbouwen.",
+        cta: "Lees de bijdragegids",
+      },
+    },
+
+    openTitle: "Openstaand werk, op dit moment.",
+    openBody: "Alles binnen de organisatie dat nu gelabeld staat voor nieuwkomers. Deze lijst is de live issue-zoekopdracht, geen handmatig bijgehouden kopie.",
+    openNone: "Er staat op dit moment niets gelabeld voor nieuwkomers.",
+    openAll: "Bekijk alle open issues",
+
+    gatesTitle: "De poorten.",
+    gatesBody: "Elke pull request komt hier langs voordat de review begint. Draai ze eerst lokaal — het zijn dezelfde commando's die CI draait.",
+
+    rulesTitle: "De afspraken die afgedwongen worden.",
+    rulesBody: "Dit zijn geen reviewvoorkeuren. Ze worden door tests gecontroleerd, dus een wijziging die er één breekt laat de build falen in plaats van een opmerking op te leveren.",
+
+    docsTitle: "Wat verder het lezen waard is.",
+    docsBody: "De specificatie is leidend voor hoe beatrax zich gedraagt — boven deze website en boven elke README.",
+    docContributing: "Bijdragegids",
+    docStandards: "Codestandaarden",
+    docComments: "Commentaarbeleid",
+    docTesting: "Teststrategie",
+    docDone: "Definitie van klaar",
+    docAi: "Bijdragen met AI-ondersteuning",
+  },
+
+  changelog: {
+    eyebrow: "Releases",
+    title: "Alles wat is uitgebracht.",
+    lead: "Gegenereerd uit het commit-logboek op het moment dat een versie getagd wordt, zodat deze pagina niet kan afwijken van wat er werkelijk is uitgegaan.",
+    statReleases: "releases",
+    statChanges: "vastgelegde wijzigingen",
+    statLatest: "laatste",
+    latest: "Laatste",
+    downloads: "installers bijgevoegd",
+    onGitHub: "Bekijk de releases op GitHub",
+    unavailable: "De releases konden bij het bouwen niet geladen worden.",
+  },
+
+  faq: {
+    eyebrow: "Vragen",
+    title: "Wat mensen als eerste vragen.",
+    lead: "Inclusief de lastige. De antwoorden komen uit de specificatie, dus ze zeggen hier hetzelfde als overal elders.",
+    source: "Lees de FAQ in de specificatie",
+    unavailable: "De vragen konden bij het bouwen niet geladen worden.",
   },
 
   colophon: {

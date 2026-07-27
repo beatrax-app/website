@@ -1,0 +1,164 @@
+---
+// Rendered from the spec's 90-appendix/faq.md, translated into Dutch by
+// question. Also emits FAQPage structured data — which is why the answers in
+// the spec are written to stand alone: a search result shows one answer with
+// none of its surrounding context.
+import { getFaq } from "../lib/github";
+import { faqNl, faqHeadingsNl } from "../i18n/faq";
+import { site } from "../data/site";
+import { copyFor, type Locale } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const specGroups = await getFaq();
+const specUrl = `${site.specRepo}/blob/main/90-appendix/faq.md`;
+
+// An English question with no Dutch entry falls back to English rather than
+// vanishing — a missing translation should be visible, not silently lossy.
+const groups = specGroups.map((g) => ({
+  heading: locale === "nl" ? (faqHeadingsNl[g.heading] ?? g.heading) : g.heading,
+  items: g.items.map((i) => (locale === "nl" ? (faqNl[i.q] ?? i) : i)),
+}));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: groups.flatMap((g) =>
+    g.items.map((i) => ({
+      "@type": "Question",
+      name: i.q,
+      acceptedAnswer: { "@type": "Answer", text: i.a },
+    })),
+  ),
+};
+---
+
+<article class="doc">
+  <header class="section doc__head">
+    <div class="container">
+      <p class="eyebrow">{t.faq.eyebrow}</p>
+      <h1 class="doc__h">{t.faq.title}</h1>
+      <p class="lead doc__lead">{t.faq.lead}</p>
+    </div>
+  </header>
+
+  <div class="container faq__body">
+    {
+      groups.length === 0 ? (
+        <p class="faq__empty">
+          {t.faq.unavailable}{" "}
+          <a href={specUrl} target="_blank" rel="noopener">
+            {t.faq.source}
+          </a>
+        </p>
+      ) : (
+        groups.map((g) => (
+          <section class="faq__group">
+            <h2 class="faq__h">{g.heading}</h2>
+            {g.items.map((i) => (
+              <details class="faq__item">
+                <summary class="faq__q">{i.q}</summary>
+                <p class="faq__a">{i.a}</p>
+              </details>
+            ))}
+          </section>
+        ))
+      )
+    }
+    <p class="faq__source">
+      <a href={specUrl} target="_blank" rel="noopener">{t.faq.source} →</a>
+    </p>
+  </div>
+</article>
+
+{groups.length > 0 && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+<style>
+  .doc__head {
+    padding-bottom: var(--space-4);
+    background: radial-gradient(
+      110% 60% at 20% -20%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 60%
+    );
+  }
+  .doc__h {
+    font-size: var(--size-display-xl);
+    margin-top: var(--space-3);
+    max-width: 22ch;
+  }
+  .doc__lead {
+    margin-top: var(--space-4);
+    max-width: 62ch;
+  }
+  .faq__body {
+    padding-bottom: var(--space-9);
+  }
+  /* The accordion spans a generous column; the reading measure sits on the
+     answer text, so a wide viewport does not leave the page lopsided. */
+  .faq__group {
+    margin-top: var(--space-8);
+    max-width: 1000px;
+  }
+  .faq__h {
+    font-size: var(--size-display-m);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-2);
+  }
+  .faq__item {
+    border-bottom: 1px solid var(--border);
+  }
+  .faq__q {
+    padding: var(--space-4) var(--space-6) var(--space-4) 0;
+    cursor: pointer;
+    font-weight: var(--weight-semibold);
+    list-style: none;
+    position: relative;
+    transition: color 0.14s ease;
+  }
+  .faq__q::-webkit-details-marker {
+    display: none;
+  }
+  .faq__q:hover {
+    color: var(--accent);
+  }
+  .faq__q::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-faint);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .faq__item[open] .faq__q::after {
+    content: "−";
+    color: var(--accent);
+  }
+  .faq__a {
+    padding-bottom: var(--space-5);
+    color: var(--text-muted);
+    max-width: 72ch;
+    line-height: 1.65;
+  }
+  .faq__empty {
+    margin-top: var(--space-7);
+    color: var(--text-muted);
+  }
+  .faq__empty a,
+  .faq__source a {
+    color: var(--accent);
+  }
+  .faq__source {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+</style>

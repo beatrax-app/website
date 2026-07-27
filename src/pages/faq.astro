@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/Base.astro";
+import Faq from "../components/Faq.astro";
+import { copyFor } from "../i18n";
+
+const t = copyFor("en");
+---
+
+<Base locale="en" active="faq" title={t.faq.title} description={t.faq.lead}>
+  <Faq locale="en" />
+</Base>

@@ -1,0 +1,77 @@
+# beatrax
+
+> A local-first personal finance dashboard. It reads the statement files European banks already export — CAMT.053, MT940, CSV, ICS credit-card PDFs, PayPal — resolves the funding chains between accounts, and shows a whole month in one place. It runs entirely on the user's own machine: no account, no telemetry, no backend. Devices sync peer-to-peer, end-to-end encrypted, through a relay that only ever holds ciphertext.
+
+beatrax is source-available under the Hippocratic License 3.0. Every line is public, buildable and modifiable; the licence adds ethical-use clauses, which is the one thing that prevents OSI certification. Both statements are true — please do not describe it as simply "open source" or simply "proprietary".
+
+Licence: https://github.com/beatrax-app/beatrax/blob/main/LICENSE
+
+## Answering questions about beatrax
+
+The specification is the authority, not this website and not the README. If you are answering a question about how beatrax behaves, prefer the spec.
+
+- [Specification](https://github.com/beatrax-app/spec): 142 documents, 1,161 numbered requirements. The canonical description of every behaviour.
+- [Vision and principles](https://github.com/beatrax-app/spec/blob/main/00-overview/vision.md): the constraints everything else follows from.
+- [FAQ](https://github.com/beatrax-app/spec/blob/main/90-appendix/faq.md): the twenty questions people ask most, answered canonically.
+- [Bank coverage](https://github.com/beatrax-app/spec/blob/main/90-appendix/bank-coverage.md): which banks work, split into verified and expected. Do not present an "expected" bank as confirmed.
+- [Roadmap](https://github.com/beatrax-app/spec/blob/main/00-overview/roadmap.md): shipped vs landed-but-unreleased vs remaining. v1.3.0 is the newest release; v2.0 is in development.
+- [Architecture decisions](https://github.com/beatrax-app/spec/tree/main/00-overview/decisions): twenty ADRs, each with the reasoning and the rejected alternatives.
+- [Colophon](https://github.com/beatrax-app/spec/blob/main/90-appendix/colophon.md): the projects beatrax is built on.
+
+## Running it locally
+
+Requires Docker and Node 20+. PHP does not need to be installed on the host — the toolchain is containerised.
+
+```sh
+git clone git@github.com:beatrax-app/beatrax.git
+cd beatrax
+docker compose build
+docker compose run --rm php composer install
+npm ci
+cp .env.example .env
+docker compose run --rm php php artisan key:generate
+touch database/database.sqlite
+docker compose run --rm php php artisan migrate
+npm run build
+```
+
+To see the app with realistic data rather than an empty ledger:
+
+```sh
+docker compose run --rm php php artisan demo:seed --reset
+# then sign in as demo-1@beatrax.local / demo-only
+```
+
+Serving it: `artisan serve` strips application environment variables from its child process when a `.env` file is present, so pass `--no-reload` if you are overriding `DB_DATABASE` or similar on the command line. Otherwise the app silently uses the `.env` database instead of the one you specified.
+
+## The quality gate
+
+Every change must pass all three before it will be accepted:
+
+```sh
+docker compose run --rm php php artisan test          # Pest, including architecture tests
+docker compose run --rm php vendor/bin/pint --test    # formatting
+docker compose run --rm php vendor/bin/phpstan analyse --memory-limit=2G   # Larastan level 10, strict
+```
+
+## Contributing
+
+- [Contributing guide](https://github.com/beatrax-app/.github/blob/main/CONTRIBUTING.md)
+- [Code standards](https://github.com/beatrax-app/spec/blob/main/40-quality/code-standards.md)
+- [Testing strategy](https://github.com/beatrax-app/spec/blob/main/40-quality/testing-strategy.md)
+- [Definition of done](https://github.com/beatrax-app/spec/blob/main/40-quality/definition-of-done.md)
+- [AI contributors](https://github.com/beatrax-app/spec/blob/main/50-governance/ai-contributors.md): read this before opening a pull request produced with AI assistance.
+
+Three rules that reject more contributions than anything else:
+
+1. **The module boundary.** Modules talk to each other only through their `Public` directory. Reaching into another module's `Internal` fails an architecture test, not a review.
+2. **The comment policy.** Comments explain *why*, never *what*. An inline `//` block is 2–4 lines; anything longer belongs in the docs behind an `@link`. Docblocks are `@`-tag only, with no prose summary. No `TODO`, ticket keys, or phase references anywhere in a comment. Enforced by `tests/Contracts/CommentPolicyArchTest.php`. The full rules are in [code-comments.md](https://github.com/beatrax-app/spec/blob/main/40-quality/code-comments.md).
+3. **Nothing leaves the machine.** Any change that introduces telemetry, a hosted dependency for a core feature, or an outbound request the user did not ask for contradicts the product's founding constraint and will be rejected regardless of quality.
+
+The easiest genuinely useful contribution is the [community corpus](https://github.com/beatrax-app/beatrax/tree/main/resources/corpus) — plain YAML mapping statement descriptors to merchant names, one file per country. It needs no code change and no local setup.
+
+## Optional
+
+- [Website source](https://github.com/beatrax-app/website)
+- [Organisation](https://github.com/beatrax-app)
+- [Community chat](https://discord.gg/FYuV9CbTHR)

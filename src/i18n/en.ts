@@ -18,7 +18,10 @@ export const en = {
     formats: "Banks & formats",
     licence: "Open source",
     community: "Community",
+    faq: "FAQ",
     privacy: "Privacy",
+    contribute: "Contribute",
+    changelog: "Changelog",
     roadmap: "Roadmap",
     download: "Download",
     skip: "Skip to content",
@@ -221,6 +224,78 @@ export const en = {
     repos: "Repositories",
     product: "Product",
     org: "Organisation",
+  },
+
+  contribute: {
+    eyebrow: "Contribute",
+    title: "The project is better with you in it.",
+    lead: "beatrax is built in the open under an ethical-use licence. You can read every line, run it yourself, and change it. This page is what to actually do — the rules below are read straight out of the specification, so they are the same rules a reviewer will apply.",
+
+    routesTitle: "Four ways in, in order of effort.",
+    routesBody: "Not every useful contribution is code. The first one on this list is the one the product needs most and needs no local setup at all.",
+    routes: {
+      corpus: {
+        title: "Add to the community corpus",
+        body: "Plain YAML mapping the cryptic descriptors your bank prints onto names people recognise. No code, no toolchain, no local install — one file per country, edited in the browser.",
+        cta: "How the corpus works",
+      },
+      report: {
+        title: "Report what broke",
+        body: "A statement that imported wrong, a total that looks off, a screen that misbehaves on your phone. Bring the shape of the problem; never attach a real statement.",
+        cta: "Open an issue",
+      },
+      spec: {
+        title: "Change the specification",
+        body: "Behaviour is specified before it is written. If you want beatrax to do something differently, the specification change lands first and the code cites it.",
+        cta: "Read the change lifecycle",
+      },
+      code: {
+        title: "Write the code",
+        body: "Pick up open work or bring your own. Large changes are worth agreeing on first — shape is cheaper to settle before the pull request than after.",
+        cta: "Read the contributing guide",
+      },
+    },
+
+    openTitle: "Open work, right now.",
+    openBody: "Everything across the organisation currently labelled for newcomers. This list is the live issue search, not a hand-kept copy of it.",
+    openNone: "Nothing is labelled for newcomers at the moment.",
+    openAll: "Browse all open issues",
+
+    gatesTitle: "The gates.",
+    gatesBody: "Every pull request passes all of these before review starts. Run them locally first — they are the same commands CI runs.",
+
+    rulesTitle: "The conventions that are enforced.",
+    rulesBody: "These are not review preferences. They are checked by tests, so a change that breaks one fails the build rather than collecting a comment.",
+
+    docsTitle: "Everything else worth reading.",
+    docsBody: "The specification is the authority on how beatrax behaves — ahead of this website and ahead of any README.",
+    docContributing: "Contributing guide",
+    docStandards: "Code standards",
+    docComments: "Comment policy",
+    docTesting: "Testing strategy",
+    docDone: "Definition of done",
+    docAi: "Contributing with AI assistance",
+  },
+
+  changelog: {
+    eyebrow: "Releases",
+    title: "Everything that has shipped.",
+    lead: "Generated from the commit log when each version is tagged, so this page cannot disagree with what actually went out.",
+    statReleases: "releases",
+    statChanges: "logged changes",
+    statLatest: "latest",
+    latest: "Latest",
+    downloads: "installers attached",
+    onGitHub: "See the releases on GitHub",
+    unavailable: "Releases could not be loaded at build time.",
+  },
+
+  faq: {
+    eyebrow: "Questions",
+    title: "The things people ask first.",
+    lead: "Including the awkward ones. Answers come from the specification, so they say the same thing here as everywhere else.",
+    source: "Read the FAQ in the specification",
+    unavailable: "The questions could not be loaded at build time.",
   },
 
   colophon: {

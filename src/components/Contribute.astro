@@ -1,0 +1,340 @@
+---
+// The contribute page. The two lists that decide whether a pull request is
+// accepted — the gates and the enforced conventions — are read out of the
+// specification at build time rather than restated, so this page cannot ask
+// for something the project no longer asks for.
+//
+// Open work is the org's own "good first issue" search. Setup commands are
+// deliberately linked, not copied: they change with the toolchain and the
+// product repository is where they are kept correct.
+import { getSiteData, getContributing } from "../lib/github";
+import { site } from "../data/site";
+import { copyFor, type Locale } from "../i18n";
+import { localePath } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = copyFor(locale);
+const [data, guide] = await Promise.all([getSiteData(), getContributing()]);
+
+const issues = data.goodFirstIssues;
+
+const routes = [
+  {
+    key: "corpus",
+    href: localePath(locale, "/community"),
+    external: false,
+  },
+  {
+    key: "report",
+    href: `${site.repo}/issues/new/choose`,
+    external: true,
+  },
+  {
+    key: "spec",
+    href: `${site.specRepo}/blob/main/50-governance/change-lifecycle.md`,
+    external: true,
+  },
+  {
+    key: "code",
+    href: `${site.specRepo}/blob/main/50-governance/contributing.md`,
+    external: true,
+  },
+] as const;
+
+const docs = [
+  { label: t.contribute.docContributing, href: `${site.specRepo}/blob/main/50-governance/contributing.md` },
+  { label: t.contribute.docStandards, href: `${site.specRepo}/blob/main/40-quality/code-standards.md` },
+  { label: t.contribute.docComments, href: `${site.specRepo}/blob/main/40-quality/code-comments.md` },
+  { label: t.contribute.docTesting, href: `${site.specRepo}/blob/main/40-quality/testing-strategy.md` },
+  { label: t.contribute.docDone, href: `${site.specRepo}/blob/main/40-quality/definition-of-done.md` },
+  { label: t.contribute.docAi, href: `${site.specRepo}/blob/main/50-governance/ai-contributors.md` },
+];
+---
+
+<article class="doc">
+  <header class="section doc__head">
+    <div class="container">
+      <p class="eyebrow">{t.contribute.eyebrow}</p>
+      <h1 class="doc__h">{t.contribute.title}</h1>
+      <p class="lead doc__lead">{t.contribute.lead}</p>
+    </div>
+  </header>
+
+  <section class="section container">
+    <h2 class="ds__h">{t.contribute.routesTitle}</h2>
+    <p class="ds__p">{t.contribute.routesBody}</p>
+    <ol class="routes">
+      {
+        routes.map((r, i) => (
+          <li class="routes__item card">
+            <span class="routes__n mono">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 class="routes__h">{t.contribute.routes[r.key].title}</h3>
+              <p class="routes__b">{t.contribute.routes[r.key].body}</p>
+              <a
+                class="routes__a"
+                href={r.href}
+                target={r.external ? "_blank" : undefined}
+                rel={r.external ? "noopener" : undefined}
+              >
+                {t.contribute.routes[r.key].cta} →
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section container">
+    <h2 class="ds__h">{t.contribute.openTitle}</h2>
+    <p class="ds__p">{t.contribute.openBody}</p>
+
+    {
+      issues.length > 0 ? (
+        <ul class="issues">
+          {issues.map((i) => (
+            <li class="issues__i">
+              <a class="issues__a" href={i.url} target="_blank" rel="noopener">
+                <span class="issues__n mono">#{i.number}</span>
+                <span class="issues__t">{i.title}</span>
+              </a>
+              <span class="issues__r mono">{i.repo}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="issues__none">
+          {t.contribute.openNone}{" "}
+          <a href={`${site.githubOrg}/issues`} target="_blank" rel="noopener">
+            {t.contribute.openAll}
+          </a>
+        </p>
+      )
+    }
+  </section>
+
+  {
+    guide.gates.length > 0 && (
+      <section class="section container">
+        <h2 class="ds__h">{t.contribute.gatesTitle}</h2>
+        <p class="ds__p">{t.contribute.gatesBody}</p>
+        <div class="gates">
+          {guide.gates.map((g) => (
+            <div class="gates__g card">
+              <h3 class="gates__h">{g.title}</h3>
+              {g.body && <p class="gates__b">{g.body}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    guide.rules.length > 0 && (
+      <section class="section container">
+        <h2 class="ds__h">{t.contribute.rulesTitle}</h2>
+        <p class="ds__p">{t.contribute.rulesBody}</p>
+        <ul class="rules">
+          {guide.rules.map((r) => (
+            <li class="rules__r">
+              <b class="rules__t">{r.title}</b>
+              {r.body && <span class="rules__b">{r.body}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class="section container">
+    <h2 class="ds__h">{t.contribute.docsTitle}</h2>
+    <p class="ds__p">{t.contribute.docsBody}</p>
+    <ul class="docs">
+      {
+        docs.map((d) => (
+          <li>
+            <a href={d.href} target="_blank" rel="noopener">
+              {d.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</article>
+
+<style>
+  .doc__head {
+    padding-bottom: var(--space-4);
+    background: radial-gradient(
+      110% 60% at 20% -20%,
+      color-mix(in srgb, var(--accent) 10%, transparent),
+      transparent 60%
+    );
+  }
+  .doc__h {
+    font-size: var(--size-display-xl);
+    margin-top: var(--space-3);
+    max-width: 20ch;
+  }
+  .doc__lead {
+    margin-top: var(--space-4);
+    max-width: 62ch;
+  }
+  .ds__h {
+    font-size: var(--size-display-sm);
+    max-width: 26ch;
+  }
+  .ds__p {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 66ch;
+  }
+  .routes {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-6);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .routes__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    align-items: start;
+  }
+  .routes__n {
+    font-size: 0.8rem;
+    color: var(--accent);
+    padding-top: 0.15rem;
+  }
+  .routes__h {
+    font-size: 1.02rem;
+  }
+  .routes__b {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .routes__a {
+    display: inline-block;
+    margin-top: var(--space-3);
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  .issues {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-5);
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    max-width: 900px;
+  }
+  .issues__i {
+    background: var(--surface);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+  }
+  .issues__a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .issues__n {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    flex: none;
+  }
+  .issues__t {
+    color: var(--text);
+  }
+  .issues__r {
+    font-size: 0.74rem;
+    color: var(--text-faint);
+    flex: none;
+  }
+  .issues__none {
+    margin-top: var(--space-5);
+    color: var(--text-muted);
+  }
+  .issues__none a {
+    color: var(--accent);
+  }
+  .gates {
+    margin-top: var(--space-5);
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .gates__g {
+    padding: var(--space-5);
+  }
+  .gates__h {
+    font-size: 1rem;
+    color: var(--accent);
+  }
+  .gates__b {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .rules {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-5);
+    display: grid;
+    gap: var(--space-3);
+    max-width: 780px;
+  }
+  .rules__r {
+    position: relative;
+    padding-left: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .rules__r::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .rules__t {
+    color: var(--text);
+    font-weight: var(--weight-semibold);
+    margin-right: 0.4rem;
+  }
+  .docs {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-5);
+    display: grid;
+    gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    max-width: 900px;
+  }
+  .docs a {
+    color: var(--accent);
+    font-size: 0.92rem;
+  }
+</style>

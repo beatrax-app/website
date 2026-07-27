@@ -22,6 +22,7 @@ import type {
 import { seedRepos } from "../data/seed";
 import { seedMilestonesRaw } from "../data/seed-milestones";
 import { seedCoverage } from "../data/coverage";
+import { seedReleasesRaw } from "../data/seed-releases";
 
 const ORG = "beatrax-app";
 const API = "https://api.github.com";
@@ -38,6 +39,16 @@ const COLOPHON_FILE = `${RAW}/${ORG}/spec/main/90-appendix/colophon.md`;
 // Bank coverage is a reference list that changes as people report what worked,
 // so it lives in the spec and is rendered here rather than duplicated.
 const BANKS_FILE = `${RAW}/${ORG}/spec/main/90-appendix/bank-coverage.md`;
+
+// The FAQ answers are product facts, so the spec owns them. English renders
+// straight from this file; Dutch is a translation keyed to the same questions,
+// falling back to the English answer rather than dropping a question.
+const FAQ_FILE = `${RAW}/${ORG}/spec/main/90-appendix/faq.md`;
+
+// The rules a contribution is actually judged against. Restating them here
+// would mean the site could tell someone to do something the specification no
+// longer asks for, so the two lists are the same list.
+const CONTRIBUTING_FILE = `${RAW}/${ORG}/spec/main/50-governance/contributing.md`;
 
 function headers(): HeadersInit {
   const h: Record<string, string> = {
@@ -94,6 +105,13 @@ function rollup(deliverables: Deliverable[]): {
 }
 
 // ── Markdown parsing ──────────────────────────────────────────────
+
+// Drops a trailing parenthetical that is only a path into the spec repository.
+// Identifier citations like "(ADR-0002)" survive, because they still mean
+// something to a reader who is not looking at the file tree.
+function dropPathRef(s: string): string {
+  return s.replace(/\s*\((?=[^)]*[/.])[^)]*\.md[^)]*\)/g, "").trim();
+}
 
 function cleanCell(s: string): string {
   return s
@@ -204,6 +222,60 @@ export function parseColophon(md: string): ColophonGroup[] {
   return out;
 }
 
+export interface ContribRule {
+  title: string;
+  body: string;
+}
+
+export interface ContribGuide {
+  gates: ContribRule[];
+  rules: ContribRule[];
+}
+
+// Pulls the two lists a first-time contributor is most likely to trip over out
+// of the spec's contributing page: the gates a pull request must pass, and the
+// conventions that are enforced rather than reviewed. Both are written as
+// `**Title** — body` items, numbered for the gates and bulleted for the rules.
+export function parseContributing(md: string): ContribGuide {
+  const gates: ContribRule[] = [];
+  const rules: ContribRule[] = [];
+  let bucket: ContribRule[] | null = null;
+
+  for (const raw of md.split("\n")) {
+    const line = raw.trim();
+
+    if (line.startsWith("## ")) {
+      const heading = line.slice(3).toLowerCase();
+      bucket = heading.includes("gate")
+        ? gates
+        : heading.includes("negotiable")
+          ? rules
+          : null;
+      continue;
+    }
+    if (!bucket) continue;
+
+    const item = /^(?:[-*]|\d+\.)\s+\*\*(.+?)\*\*[.:]?\s*(?:—|–|-)?\s*(.*)$/.exec(line);
+    if (!item) {
+      // A wrapped bullet rejoins the one above it; the spec wraps its prose at
+      // eighty columns, which would otherwise truncate a rule mid-sentence.
+      const last = bucket[bucket.length - 1];
+      if (last && line) last.body = dropPathRef(cleanCell(`${last.body} ${line}`));
+      continue;
+    }
+
+    const title = cleanCell(item[1]).replace(/[.:]$/, "");
+    const body = dropPathRef(cleanCell(item[2]));
+    if (title) bucket.push({ title, body });
+  }
+  return { gates, rules };
+}
+
+export async function getContributing(): Promise<ContribGuide> {
+  const md = await getText(CONTRIBUTING_FILE);
+  return md ? parseContributing(md) : { gates: [], rules: [] };
+}
+
 export async function getColophon(): Promise<ColophonGroup[]> {
   const md = await getText(COLOPHON_FILE);
   return md ? parseColophon(md) : [];
@@ -281,6 +353,56 @@ export async function getBankCoverage(): Promise<BankCoverage | null> {
   return md ? parseBankCoverage(md) : null;
 }
 
+export interface SpecFaqGroup {
+  heading: string;
+  items: { q: string; a: string }[];
+}
+
+// `## group` / `### question` / prose answer. Paragraphs are joined because a
+// structured-data answer has to be a single string.
+export function parseFaq(md: string): SpecFaqGroup[] {
+  const groups: SpecFaqGroup[] = [];
+  let group: SpecFaqGroup | null = null;
+  let question: string | null = null;
+  let answer: string[] = [];
+
+  const flush = () => {
+    if (group && question && answer.length) {
+      group.items.push({ q: question, a: answer.join(" ").trim() });
+    }
+    question = null;
+    answer = [];
+  };
+
+  for (const raw of md.split("\n")) {
+    const line = raw.trim();
+
+    if (line.startsWith("## ")) {
+      flush();
+      if (group && group.items.length) groups.push(group);
+      const heading = cleanCell(line.slice(3));
+      group = /^related$/i.test(heading) ? null : { heading, items: [] };
+      continue;
+    }
+    if (line.startsWith("### ")) {
+      flush();
+      question = cleanCell(line.slice(4));
+      continue;
+    }
+    if (!group || !question) continue;
+    if (!line || line.startsWith("#") || line.startsWith("-")) continue;
+    answer.push(cleanCell(line));
+  }
+  flush();
+  if (group && group.items.length) groups.push(group);
+  return groups;
+}
+
+export async function getFaq(): Promise<SpecFaqGroup[]> {
+  const md = await getText(FAQ_FILE);
+  return md ? parseFaq(md) : [];
+}
+
 // ── GitHub API ────────────────────────────────────────────────────
 
 interface ApiRepo {
@@ -346,6 +468,13 @@ function platformFor(name: string): ReleaseAsset["platform"] {
   if (n.includes("sha256") || n.includes("checksum") || n.endsWith(".sig")) return "checksums";
   return undefined;
 }
+
+// Seeded releases go through the same filename rule as live ones, so a
+// fallback build cannot label an installer differently from a normal build.
+const seedReleases: Release[] = seedReleasesRaw.map((r) => ({
+  ...r,
+  assets: r.assets.map((a) => ({ ...a, platform: platformFor(a.name) })),
+}));
 
 function toRelease(r: ApiRelease): Release {
   return {
@@ -472,9 +601,14 @@ export async function getSiteData(): Promise<SiteData> {
   const live = repoResult !== null;
   const repos = repoResult?.repos ?? seedRepos;
   const stars = repoResult?.stars ?? 0;
-  const [releases, goodFirstIssues, coverage] = live
+  const [liveReleases, goodFirstIssues, coverage] = live
     ? await Promise.all([fetchReleases(), fetchGoodFirstIssues(), fetchCoverage()])
     : [[] as Release[], [] as Issue[], seedCoverage];
+
+  // Falls back rather than rendering an empty history: a changelog that shows
+  // nothing reads as "this project has never shipped", which is worse than
+  // showing a build-time-old copy of the truth.
+  const releases = liveReleases.length ? liveReleases : seedReleases;
 
   const milestones = buildMilestones(roadmapMd);
 

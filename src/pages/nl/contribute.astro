@@ -1,0 +1,11 @@
+---
+import Base from "../../layouts/Base.astro";
+import Contribute from "../../components/Contribute.astro";
+import { copyFor } from "../../i18n";
+
+const t = copyFor("nl");
+---
+
+<Base locale="nl" active="contribute" title={t.contribute.title} description={t.contribute.lead}>
+  <Contribute locale="nl" />
+</Base>
