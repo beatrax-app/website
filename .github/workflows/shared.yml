@@ -1,0 +1,25 @@
+# Calls the reusable workflows the spec repo defines once for the whole
+# organisation (Q-R20). Pinned to a commit for the same reason the
+# third-party actions are: a branch reference can be repointed without this
+# file changing.
+name: shared
+on: [pull_request]
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    uses: beatrax-app/spec/.github/workflows/hygiene.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+  security:
+    uses: beatrax-app/spec/.github/workflows/security.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+  dco:
+    uses: beatrax-app/spec/.github/workflows/dco.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+  commitlint:
+    uses: beatrax-app/spec/.github/workflows/commitlint.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+  spec-references:
+    uses: beatrax-app/spec/.github/workflows/spec-references.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+  labeler:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: beatrax-app/spec/.github/workflows/labeler.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
