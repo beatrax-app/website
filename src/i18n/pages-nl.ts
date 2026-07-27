@@ -250,18 +250,7 @@ export const pagesNl: Record<string, Doc> = {
         },
         note: "Kies CAMT.053 als je bank het aanbiedt — die extra structuur levert betere tegenpartijherkenning op en minder regels die in de triage belanden.",
       },
-      {
-        heading: "Nederlandse banken",
-        body: [
-          "beatrax wordt in Nederland gebouwd en de import is begonnen bij Nederlandse bronnen, dus die zijn het best gedekt.",
-        ],
-        list: [
-          { title: "ASN Bank", body: "CAMT.053, MT940 en CSV, alle drie op vorm herkend." },
-          { title: "ING", body: "CSV op vorm herkend; CAMT.053 en MT940 generiek gelezen." },
-          { title: "International Card Services (ICS)", body: "Maandelijkse pdf-afschriften, inclusief de bulkafrekening die creditcardaankopen terugkoppelt aan je betaalrekening." },
-        ],
-        note: "Elke bank die CAMT.053 of MT940 aanbiedt is leesbaar, ook als hij hier niet genoemd staat — dat zijn standaarden, geen bankspecifieke formaten. Bij de genoemde banken wordt daarnaast de CSV-vorm automatisch herkend.",
-      },
+      { slot: true },
       {
         heading: "Wat het niet doet",
         tone: "warn",

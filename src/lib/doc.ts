@@ -28,6 +28,9 @@ export interface DocSection {
   table?: DocTable;
   note?: string;
   tone?: "default" | "warn" | "accent";
+  // Renders the page's slot at this position instead of a section. A doc with
+  // no such marker falls back to slotting after the last section.
+  slot?: boolean;
 }
 
 export interface Doc {

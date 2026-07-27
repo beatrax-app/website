@@ -6,6 +6,11 @@ interface Props {
 }
 
 const { doc } = Astro.props;
+
+// Where the slotted component goes. Explicit placement wins; otherwise it
+// lands after the prose, which is the right default for a page whose live
+// section is a closing appendix.
+const hasSlotMarker = doc.sections.some((s) => s.slot);
 ---
 
 <article class="doc">
@@ -19,7 +24,10 @@ const { doc } = Astro.props;
 
   <div class="container doc__body">
     {
-      doc.sections.map((s) => (
+      doc.sections.map((s) =>
+        s.slot ? (
+          <slot />
+        ) : (
         <section class:list={["ds", s.tone && s.tone !== "default" ? `ds--${s.tone}` : null]}>
           {s.heading && <h2 class="ds__h">{s.heading}</h2>}
 
@@ -71,10 +79,11 @@ const { doc } = Astro.props;
 
           {s.note && <p class="ds__note">{s.note}</p>}
         </section>
-      ))
+        ),
+      )
     }
 
-    <slot />
+    {!hasSlotMarker && <slot />}
 
     {
       doc.cta && (

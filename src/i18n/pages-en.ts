@@ -249,18 +249,7 @@ export const pagesEn: Record<string, Doc> = {
         },
         note: "CAMT.053 is worth choosing where your bank offers it — the extra structure means better counterparty resolution and fewer rows landing in triage.",
       },
-      {
-        heading: "Dutch banks",
-        body: [
-          "beatrax is built in the Netherlands and the ingestion work started with Dutch sources, so these are the best-covered.",
-        ],
-        list: [
-          { title: "ASN Bank", body: "CAMT.053, MT940 and CSV, all recognised by shape." },
-          { title: "ING", body: "CSV recognised by shape; CAMT.053 and MT940 read generically." },
-          { title: "International Card Services (ICS)", body: "Monthly PDF statements, including the bulk settlement that links card purchases back to your current account." },
-        ],
-        note: "Any bank offering CAMT.053 or MT940 is readable even if it isn't named here — those are standards, not per-bank formats. Named banks additionally get their CSV shape auto-detected.",
-      },
+      { slot: true },
       {
         heading: "What it doesn't do",
         tone: "warn",
