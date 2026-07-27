@@ -1,0 +1,49 @@
+# Gate for pull requests: the site must type-check and build.
+#
+# The build reads the GitHub API for releases, roadmap and coverage, so it is
+# given a token — an unauthenticated build shares a per-runner rate limit and
+# would silently fall back to the committed seeds, hiding a broken fetch.
+#
+# Every third-party action is pinned to a full 40-char commit SHA with the
+# human-readable tag retained as an inline comment for legibility. Tag-only
+# references are a supply-chain risk: mutable tags can be repointed at
+# malicious commits without the workflow file changing.
+
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type-check
+        run: npm run check
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run build
