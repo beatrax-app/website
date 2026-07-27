@@ -12,4 +12,4 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    uses: beatrax-app/spec/.github/workflows/stale.yml@97e2ad2930e8d5d0baca83a9e8f45cf710215b8d # main
+    uses: beatrax-app/spec/.github/workflows/stale.yml@v1
