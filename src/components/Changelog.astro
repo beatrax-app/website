@@ -10,6 +10,10 @@
 // Only the three inline marks release notes actually use are rendered; the rest
 // of Markdown is escaped and shown literally rather than pulling a parser in for
 // text the release pipeline generates.
+//
+// The filters are built from what the releases actually contain rather than a
+// fixed list, so a component nobody has touched yet never appears and one
+// introduced tomorrow needs no change here.
 import { getSiteData } from "../lib/github";
 import { site } from "../data/site";
 import { copyFor, type Locale } from "../i18n";
@@ -23,9 +27,29 @@ const { locale } = Astro.props;
 const t = copyFor(locale);
 const data = await getSiteData();
 
+interface Item {
+  text: string;
+  // The conventional-commit scope the release pipeline publishes as `*(name)*`.
+  // Releases predating that convention simply have none.
+  scope?: string;
+}
+
 interface Block {
   heading: string;
-  items: string[];
+  key: string;
+  items: Item[];
+}
+
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+function toItem(raw: string): Item {
+  const scoped = /^\*\(([^)]+)\)\*\s*(.*)$/.exec(raw);
+  if (!scoped) return { text: raw };
+  return { scope: scoped[1].trim().toLowerCase(), text: scoped[2] };
 }
 
 function parseBody(body: string | undefined): { blocks: Block[]; prose: string[] } {
@@ -34,10 +58,10 @@ function parseBody(body: string | undefined): { blocks: Block[]; prose: string[]
   let current: Block | null = null;
   // Bullets wrap across lines in the older hand-written notes; a continuation
   // rejoins its bullet instead of being dropped on the floor.
-  let open: string[] | null = null;
+  let open: Item[] | string[] | null = null;
 
-  for (const raw of (body ?? "").split("\n")) {
-    const line = raw.trim();
+  for (const rawLine of (body ?? "").split("\n")) {
+    const line = rawLine.trim();
     if (!line) {
       open = null;
       continue;
@@ -45,21 +69,28 @@ function parseBody(body: string | undefined): { blocks: Block[]; prose: string[]
 
     if (line.startsWith("#")) {
       if (current?.items.length) blocks.push(current);
-      current = { heading: line.replace(/^#+\s*/, ""), items: [] };
+      const heading = line.replace(/^#+\s*/, "");
+      current = { heading, key: slug(heading), items: [] };
       open = null;
       continue;
     }
 
     const bullet = /^[-*]\s+(.*)$/.exec(line);
     if (bullet) {
-      const target = current ? current.items : prose;
-      target.push(bullet[1]);
-      open = target;
+      if (current) {
+        current.items.push(toItem(bullet[1]));
+        open = current.items;
+      } else {
+        prose.push(bullet[1]);
+        open = prose;
+      }
       continue;
     }
 
     if (open?.length) {
-      open[open.length - 1] += ` ${line}`;
+      const last = open[open.length - 1];
+      if (typeof last === "string") (open as string[])[open.length - 1] = `${last} ${line}`;
+      else last.text += ` ${line}`;
       continue;
     }
     if (!current) prose.push(line);
@@ -86,11 +117,44 @@ function inline(text: string): string {
     );
 }
 
-const releases = data.releases.map((r) => ({ ...r, ...parseBody(r.body) }));
-const totalChanges = releases.reduce(
-  (n, r) => n + r.blocks.reduce((k, b) => k + b.items.length, 0),
-  0,
-);
+// Strips the marks so the value the search matches against is what a reader
+// sees, not the markup behind it.
+const plain = (s: string) =>
+  s
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/[*`]/g, "")
+    .toLowerCase();
+
+const releases = data.releases.map((r) => {
+  const parsed = parseBody(r.body);
+  const count = parsed.blocks.reduce((n, b) => n + b.items.length, 0);
+  return { ...r, ...parsed, count };
+});
+
+const totalChanges = releases.reduce((n, r) => n + r.count, 0);
+
+// Facets, counted across every release so a chip can say how much it will
+// leave behind before it is clicked.
+const typeCounts = new Map<string, { label: string; n: number }>();
+const componentCounts = new Map<string, number>();
+
+for (const r of releases) {
+  for (const b of r.blocks) {
+    const seen = typeCounts.get(b.key);
+    typeCounts.set(b.key, { label: b.heading, n: (seen?.n ?? 0) + b.items.length });
+    for (const i of b.items) {
+      if (i.scope) componentCounts.set(i.scope, (componentCounts.get(i.scope) ?? 0) + 1);
+    }
+  }
+}
+
+const types = [...typeCounts.entries()]
+  .map(([key, v]) => ({ key, ...v }))
+  .sort((a, b) => b.n - a.n);
+
+const components = [...componentCounts.entries()]
+  .map(([key, n]) => ({ key, n }))
+  .sort((a, b) => b.n - a.n || a.key.localeCompare(b.key));
 
 // "Breaking" leads visually wherever it appears — it is the one heading a
 // reader must not skim past.
@@ -137,54 +201,137 @@ const toneFor = (heading: string) =>
           </a>
         </p>
       ) : (
-        <ol class="cl__list">
-          {releases.map((r, i) => (
-            <li class:list={["cl__rel", { "is-latest": i === 0 }]} id={r.tag}>
-              <div class="cl__rail">
-                <span class="cl__dot" aria-hidden="true" />
+        <>
+          <form class="filters" data-cl-filters role="search" aria-label={t.changelog.filterLabel}>
+            <div class="filters__row">
+              <div class="filters__search">
+                <input
+                  type="search"
+                  data-cl-search
+                  aria-label={t.changelog.searchLabel}
+                  placeholder={t.changelog.searchPlaceholder}
+                  autocomplete="off"
+                  spellcheck="false"
+                />
               </div>
-              <div class="cl__card card">
-                <header class="cl__head">
-                  <div class="cl__title">
-                    <a class="cl__tag mono" href={r.url} target="_blank" rel="noopener">
-                      {r.tag}
-                    </a>
-                    {i === 0 && <span class="cl__latest">{t.changelog.latest}</span>}
+              <output
+                class="filters__count"
+                data-cl-count
+                data-template={t.changelog.showing}
+                aria-live="polite"
+              />
+              <button class="filters__reset" type="button" data-cl-reset hidden>
+                {t.changelog.clear}
+              </button>
+            </div>
+
+            <div class="filters__group">
+              <span class="filters__legend">{t.changelog.byType}</span>
+              <div class="chips">
+                {types.map((ty) => (
+                  <button class="chip" type="button" data-cl-type={ty.key} aria-pressed="false">
+                    {ty.label}
+                    <span class="chip__n mono">{ty.n}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {components.length > 0 && (
+              <div class="filters__group">
+                <span class="filters__legend">{t.changelog.byComponent}</span>
+                <div class="chips">
+                  {components.map((c) => (
+                    <button class="chip" type="button" data-cl-comp={c.key} aria-pressed="false">
+                      {c.key}
+                      <span class="chip__n mono">{c.n}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {components.length === 0 && <p class="filters__hint">{t.changelog.noComponents}</p>}
+          </form>
+
+          <p class="cl__none" data-cl-none hidden>
+            {t.changelog.noMatches}
+          </p>
+
+          <ol class="cl__list">
+            {releases.map((r, i) => (
+              <li class:list={["cl__rel", { "is-latest": i === 0 }]} id={r.tag} data-cl-rel>
+                <div class="cl__rail">
+                  <span class="cl__dot" aria-hidden="true" />
+                </div>
+                <details class="cl__card card" open={i === 0} data-cl-details>
+                  <summary class="cl__head">
+                    <div class="cl__title">
+                      <span class="cl__tag mono">{r.tag}</span>
+                      {i === 0 && <span class="cl__latest">{t.changelog.latest}</span>}
+                    </div>
+                    <span class="cl__meta">
+                      <span class="cl__shown mono" data-cl-shown data-total={r.count}>
+                        {r.count}
+                      </span>
+                      <time class="cl__date" datetime={r.publishedAt}>
+                        {releaseDate(r.publishedAt, locale)}
+                      </time>
+                    </span>
+                  </summary>
+
+                  <div class="cl__inner">
+                    {r.name && r.name !== r.tag && <p class="cl__name">{r.name}</p>}
+                    {r.blocks.length === 0 && r.prose.length === 0 && (
+                      <p class="cl__prose cl__prose--none">{t.changelog.noNotes}</p>
+                    )}
+                    {r.prose.map((p) => (
+                      <p class="cl__prose" data-cl-prose data-text={plain(p)} set:html={inline(p)} />
+                    ))}
+
+                    {r.blocks.map((b) => (
+                      <section
+                        class:list={["cl__block", `is-${toneFor(b.heading)}`]}
+                        data-cl-block
+                        data-type={b.key}
+                      >
+                        <h3 class="cl__block-h">
+                          {b.heading}
+                          <span class="cl__count mono">{b.items.length}</span>
+                        </h3>
+                        <ul class="cl__items">
+                          {b.items.map((it) => (
+                            <li
+                              data-cl-item
+                              data-comp={it.scope ?? ""}
+                              data-text={plain(it.text)}
+                            >
+                              {it.scope && <span class="cl__scope mono">{it.scope}</span>}
+                              <span set:html={inline(it.text)} />
+                            </li>
+                          ))}
+                        </ul>
+                      </section>
+                    ))}
+
+                    <p class="cl__links">
+                      <a href={r.url} target="_blank" rel="noopener">
+                        {t.changelog.viewRelease} →
+                      </a>
+                      {r.assets.filter((a) => a.platform && a.platform !== "checksums").length >
+                        0 && (
+                        <span class="cl__assets mono">
+                          {r.assets.filter((a) => a.platform && a.platform !== "checksums").length}{" "}
+                          {t.changelog.downloads}
+                        </span>
+                      )}
+                    </p>
                   </div>
-                  <time class="cl__date" datetime={r.publishedAt}>
-                    {releaseDate(r.publishedAt, locale)}
-                  </time>
-                </header>
-
-                {r.name && r.name !== r.tag && <p class="cl__name">{r.name}</p>}
-                {r.prose.map((p) => (
-                  <p class="cl__prose" set:html={inline(p)} />
-                ))}
-
-                {r.blocks.map((b) => (
-                  <section class:list={["cl__block", `is-${toneFor(b.heading)}`]}>
-                    <h3 class="cl__block-h">
-                      {b.heading}
-                      <span class="cl__count mono">{b.items.length}</span>
-                    </h3>
-                    <ul class="cl__items">
-                      {b.items.map((it) => (
-                        <li set:html={inline(it)} />
-                      ))}
-                    </ul>
-                  </section>
-                ))}
-
-                {r.assets.length > 0 && (
-                  <p class="cl__assets mono">
-                    {r.assets.filter((a) => a.platform && a.platform !== "checksums").length}{" "}
-                    {t.changelog.downloads}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </>
       )
     }
 
@@ -195,6 +342,121 @@ const toneFor = (heading: string) =>
     </p>
   </div>
 </article>
+
+{/* Filtering is a progressive enhancement: without it every entry is present
+    and readable, and the newest release is already open. */}
+<script>
+  const form = document.querySelector<HTMLFormElement>("[data-cl-filters]");
+  if (form) {
+    const search = form.querySelector<HTMLInputElement>("[data-cl-search]")!;
+    const countOut = form.querySelector<HTMLOutputElement>("[data-cl-count]")!;
+    const reset = form.querySelector<HTMLButtonElement>("[data-cl-reset]")!;
+    const none = document.querySelector<HTMLElement>("[data-cl-none]")!;
+    const releases = [...document.querySelectorAll<HTMLElement>("[data-cl-rel]")];
+    const template = countOut.dataset.template ?? "";
+
+    const activeTypes = new Set<string>();
+    const activeComps = new Set<string>();
+
+    const chips = (attr: string) => [
+      ...form.querySelectorAll<HTMLButtonElement>(`[data-cl-${attr}]`),
+    ];
+
+    // Whether a release was open before filtering started, so clearing the
+    // filters restores what the reader had rather than a fresh page's state.
+    const openState = new WeakMap<HTMLDetailsElement, boolean>();
+
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      const filtering = q !== "" || activeTypes.size > 0 || activeComps.size > 0;
+      let shown = 0;
+
+      for (const rel of releases) {
+        const details = rel.querySelector<HTMLDetailsElement>("[data-cl-details]")!;
+        if (!openState.has(details)) openState.set(details, details.open);
+        let inRelease = 0;
+
+        for (const block of rel.querySelectorAll<HTMLElement>("[data-cl-block]")) {
+          const typeOk = activeTypes.size === 0 || activeTypes.has(block.dataset.type ?? "");
+          let inBlock = 0;
+
+          for (const item of block.querySelectorAll<HTMLElement>("[data-cl-item]")) {
+            const comp = item.dataset.comp ?? "";
+            const hit =
+              typeOk &&
+              (activeComps.size === 0 || activeComps.has(comp)) &&
+              (q === "" || (item.dataset.text ?? "").includes(q) || comp.includes(q));
+            item.hidden = !hit;
+            if (hit) inBlock++;
+          }
+
+          block.hidden = inBlock === 0;
+          inRelease += inBlock;
+        }
+
+        // A body with no headings is all prose. It carries no type, so a type
+        // or component filter correctly excludes it, but a search still has to
+        // be able to find it.
+        for (const para of rel.querySelectorAll<HTMLElement>("[data-cl-prose]")) {
+          const hit =
+            activeTypes.size === 0 &&
+            activeComps.size === 0 &&
+            (q === "" || (para.dataset.text ?? "").includes(q));
+          para.hidden = !hit;
+          if (hit && q !== "") inRelease++;
+        }
+
+        // With no filter on, nothing is hidden — including a release whose body
+        // is prose only and therefore contributes no counted entries.
+        rel.hidden = filtering && inRelease === 0;
+        shown += inRelease;
+
+        const badge = rel.querySelector<HTMLElement>("[data-cl-shown]");
+        if (badge) badge.textContent = filtering ? String(inRelease) : (badge.dataset.total ?? "");
+        // A filtered result the reader cannot see is the same as no result,
+        // so matching releases open themselves while a filter is on.
+        details.open = filtering ? true : (openState.get(details) ?? false);
+      }
+
+      none.hidden = shown > 0;
+      countOut.textContent = filtering ? template.replace("{n}", String(shown)) : "";
+      reset.hidden = !filtering;
+    }
+
+    for (const chip of chips("type")) {
+      chip.addEventListener("click", () => {
+        const key = chip.dataset.clType!;
+        activeTypes.has(key) ? activeTypes.delete(key) : activeTypes.add(key);
+        chip.setAttribute("aria-pressed", String(activeTypes.has(key)));
+        apply();
+      });
+    }
+
+    for (const chip of chips("comp")) {
+      chip.addEventListener("click", () => {
+        const key = chip.dataset.clComp!;
+        activeComps.has(key) ? activeComps.delete(key) : activeComps.add(key);
+        chip.setAttribute("aria-pressed", String(activeComps.has(key)));
+        apply();
+      });
+    }
+
+    search.addEventListener("input", apply);
+    form.addEventListener("submit", (e) => e.preventDefault());
+
+    reset.addEventListener("click", () => {
+      search.value = "";
+      activeTypes.clear();
+      activeComps.clear();
+      for (const chip of [...chips("type"), ...chips("comp")]) {
+        chip.setAttribute("aria-pressed", "false");
+      }
+      apply();
+    });
+
+    apply();
+  }
+</script>
 
 <style>
   .doc__head {
@@ -232,6 +494,100 @@ const toneFor = (heading: string) =>
   .cl__body {
     padding-bottom: var(--space-9);
   }
+
+  .filters {
+    margin-top: var(--space-6);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    max-width: 900px;
+    display: grid;
+    gap: var(--space-4);
+  }
+  .filters__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .filters__search {
+    flex: 1 1 240px;
+  }
+  .filters__search input {
+    width: 100%;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.55rem 1rem;
+  }
+  .filters__search input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .filters__count {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+  }
+  .filters__reset {
+    font: inherit;
+    font-size: 0.82rem;
+    color: var(--accent);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+  .filters__group {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .filters__legend {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+    color: var(--text-faint);
+  }
+  .filters__hint {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .chip {
+    font: inherit;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .chip:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bx-ink);
+    font-weight: var(--weight-semibold);
+  }
+  .chip__n {
+    font-size: 0.68rem;
+    opacity: 0.7;
+  }
+
   .cl__list {
     list-style: none;
     padding: 0;
@@ -244,6 +600,9 @@ const toneFor = (heading: string) =>
     display: grid;
     grid-template-columns: 28px 1fr;
     gap: var(--space-4);
+  }
+  .cl__rel[hidden] {
+    display: none;
   }
   .cl__rail {
     display: flex;
@@ -284,6 +643,16 @@ const toneFor = (heading: string) =>
     align-items: baseline;
     gap: var(--space-4);
     flex-wrap: wrap;
+    cursor: pointer;
+    list-style: none;
+  }
+  .cl__head::-webkit-details-marker {
+    display: none;
+  }
+  .cl__head:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
   }
   .cl__title {
     display: flex;
@@ -305,14 +674,36 @@ const toneFor = (heading: string) =>
     padding: 0.15em 0.6em;
     border-radius: var(--radius-pill);
   }
+  .cl__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+  .cl__shown {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.05em 0.5em;
+  }
   .cl__date {
     font-size: 0.8rem;
     color: var(--text-faint);
+  }
+  .cl__inner {
+    padding-top: var(--space-2);
   }
   .cl__name {
     margin-top: var(--space-2);
     color: var(--text);
     font-weight: var(--weight-semibold);
+  }
+  .cl__prose--none {
+    font-style: italic;
+    color: var(--text-faint);
+  }
+  .cl__prose[hidden] {
+    display: none;
   }
   .cl__prose {
     margin-top: var(--space-3);
@@ -323,6 +714,9 @@ const toneFor = (heading: string) =>
     margin-top: var(--space-5);
     padding-top: var(--space-4);
     border-top: 1px solid var(--border);
+  }
+  .cl__block[hidden] {
+    display: none;
   }
   .cl__block.is-warn {
     border-top-color: color-mix(in srgb, var(--warn) 50%, transparent);
@@ -366,6 +760,27 @@ const toneFor = (heading: string) =>
     font-size: 0.92rem;
     line-height: 1.55;
   }
+  .cl__items li[hidden] {
+    display: none;
+  }
+  .cl__items li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .cl__scope {
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: var(--accent-bg);
+    border-radius: var(--radius-pill);
+    padding: 0.05em 0.45em;
+    margin-right: 0.4rem;
+  }
   .cl__items :global(code) {
     font-family: var(--font-mono);
     font-size: 0.85em;
@@ -381,20 +796,25 @@ const toneFor = (heading: string) =>
   .cl__items :global(a) {
     color: var(--accent);
   }
-  .cl__items li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.62em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--border-strong);
+  .cl__links {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-size: 0.82rem;
+  }
+  .cl__links a {
+    color: var(--accent);
   }
   .cl__assets {
-    margin-top: var(--space-4);
     font-size: 0.75rem;
     color: var(--text-faint);
+  }
+  .cl__none {
+    margin-top: var(--space-6);
+    color: var(--text-muted);
   }
   .cl__empty {
     margin-top: var(--space-7);
