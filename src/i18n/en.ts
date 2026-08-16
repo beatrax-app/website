@@ -8,7 +8,7 @@ export const en = {
     lang: "en",
     tagline: "See every account in one calm picture",
     description:
-      "beatrax is a local-first personal finance dashboard. It reads the statements your bank already exports, resolves what really paid for what, and shows your whole month in one place. Nothing leaves your machine.",
+      "Beatrax is a local-first personal finance dashboard. It reads the statements your bank already exports, resolves what really paid for what, and shows your whole month in one place. Nothing leaves your machine.",
   },
 
   nav: {
@@ -34,12 +34,12 @@ export const en = {
     eyebrow: "Local-first · open source with ethical-use clauses",
     titleLead: "Every account.",
     titleAccent: "One calm picture.",
-    body: "beatrax pulls your bank, credit card, PayPal and app-store subscriptions into a single view of the month — then resolves the chains between them, so you can see what actually paid for what.",
+    body: "Beatrax pulls your bank, credit card, PayPal and app-store subscriptions into a single view of the month — then resolves the chains between them, so you can see what actually paid for what.",
     ctaPrimary: "Download for desktop",
     ctaSecondary: "See how it works",
     proof: "No telemetry · no cloud account · no sync server you don't own",
     shotAlt:
-      "The beatrax dashboard showing drift alerts, unusual charges, money in and out for the month, and savings-goal progress.",
+      "The Beatrax dashboard showing drift alerts, unusual charges, money in and out for the month, and savings-goal progress.",
   },
 
   promises: {
@@ -56,7 +56,7 @@ export const en = {
       },
       {
         title: "It resolves the chains",
-        body: "A PayPal charge funded by your bank. A card purchase settled weeks later in one bulk SEPA debit. beatrax links both ends, so a transaction stops being a mystery line and starts being an answer.",
+        body: "A PayPal charge funded by your bank. A card purchase settled weeks later in one bulk SEPA debit. Beatrax links both ends, so a transaction stops being a mystery line and starts being an answer.",
       },
     ],
   },
@@ -65,7 +65,7 @@ export const en = {
     eyebrow: "The problem it kills",
     title: "Your money is spread across six statements that never agree.",
     body: "The bank shows a €225 card settlement. The card statement shows fifteen purchases. PayPal shows an order the bank calls a transfer. Every month you rebuild the same picture by hand, and every month you give up somewhere near the middle.",
-    lead: "beatrax does the reconciliation once, then keeps doing it.",
+    lead: "Beatrax does the reconciliation once, then keeps doing it.",
     points: [
       "Chains a card purchase to the bulk settlement that paid for it.",
       "Names the counterparty behind an IBAN you have never seen.",
@@ -93,7 +93,7 @@ export const en = {
         body: "The setup wizard walks you through your bank, your credit card, PayPal and — if you want it — your email receipts. Every step is skippable and repeatable later.",
       },
       {
-        title: "beatrax reads and dedupes",
+        title: "Beatrax reads and dedupes",
         body: "It parses the format, fingerprints every row so re-importing the same file changes nothing, and resolves the counterparty behind each IBAN.",
       },
       {
@@ -110,7 +110,7 @@ export const en = {
   privacy: {
     eyebrow: "Privacy",
     title: "There is no server to trust.",
-    body: "beatrax has no backend. There is no account, no telemetry, no crash reporter phoning home, and no hosted copy of your ledger. The SQLite database lives in your application-support directory and is yours to back up, move or delete.",
+    body: "Beatrax has no backend. There is no account, no telemetry, no crash reporter phoning home, and no hosted copy of your ledger. The SQLite database lives in your application-support directory and is yours to back up, move or delete.",
     points: [
       {
         title: "Sync is peer-to-peer",
@@ -122,7 +122,7 @@ export const en = {
       },
       {
         title: "Open-banking stays optional",
-        body: "The connector is off by default and needs your own aggregator key. When on, your machine talks to the aggregator directly — no beatrax server sits in the middle, because there isn't one.",
+        body: "The connector is off by default and needs your own aggregator key. When on, your machine talks to the aggregator directly — no Beatrax server sits in the middle, because there isn't one.",
       },
     ],
   },
@@ -139,9 +139,9 @@ export const en = {
 
   banks: {
     verifiedTitle: "Verified",
-    verifiedBody: "Shapes beatrax recognises explicitly, with an adapter or header profile and tests behind them. Detected automatically when you upload.",
+    verifiedBody: "Shapes Beatrax recognises explicitly, with an adapter or header profile and tests behind them. Detected automatically when you upload.",
     expectedTitle: "Expected to work",
-    expectedBody: "These institutions publish CAMT.053 or MT940 to account holders, which beatrax parses generically. They have not been individually tested — so if one of them fails on a conforming file, that is a bug worth reporting, not an unsupported bank.",
+    expectedBody: "These institutions publish CAMT.053 or MT940 to account holders, which Beatrax parses generically. They have not been individually tested — so if one of them fails on a conforming file, that is a bug worth reporting, not an unsupported bank.",
     colBank: "Institution",
     colCountry: "Country",
     colFormats: "Formats",
@@ -208,7 +208,7 @@ export const en = {
 
   cta: {
     title: "Read the source. Run it yourself.",
-    body: "Every line of beatrax is public: read it, build it, modify it, fork it. The licence adds ethical-use clauses on top, which is the one thing that keeps it from being OSI-certified — the difference, and the reasoning, are written out in full.",
+    body: "Every line of Beatrax is public: read it, build it, modify it, fork it. The licence adds ethical-use clauses on top, which is the one thing that keeps it from being OSI-certified — the difference, and the reasoning, are written out in full.",
     repo: "Browse the code",
     spec: "Read the spec",
   },
@@ -229,7 +229,7 @@ export const en = {
   contribute: {
     eyebrow: "Contribute",
     title: "The project is better with you in it.",
-    lead: "beatrax is built in the open under an ethical-use licence. You can read every line, run it yourself, and change it. This page is what to actually do — the rules below are read straight out of the specification, so they are the same rules a reviewer will apply.",
+    lead: "Beatrax is built in the open under an ethical-use licence. You can read every line, run it yourself, and change it. This page is what to actually do — the rules below are read straight out of the specification, so they are the same rules a reviewer will apply.",
 
     routesTitle: "Four ways in, in order of effort.",
     routesBody: "Not every useful contribution is code. The first one on this list is the one the product needs most and needs no local setup at all.",
@@ -246,7 +246,7 @@ export const en = {
       },
       spec: {
         title: "Change the specification",
-        body: "Behaviour is specified before it is written. If you want beatrax to do something differently, the specification change lands first and the code cites it.",
+        body: "Behaviour is specified before it is written. If you want Beatrax to do something differently, the specification change lands first and the code cites it.",
         cta: "Read the change lifecycle",
       },
       code: {
@@ -268,7 +268,7 @@ export const en = {
     rulesBody: "These are not review preferences. They are checked by tests, so a change that breaks one fails the build rather than collecting a comment.",
 
     docsTitle: "Everything else worth reading.",
-    docsBody: "The specification is the authority on how beatrax behaves — ahead of this website and ahead of any README.",
+    docsBody: "The specification is the authority on how Beatrax behaves — ahead of this website and ahead of any README.",
     docContributing: "Contributing guide",
     docStandards: "Code standards",
     docComments: "Comment policy",
@@ -312,7 +312,7 @@ export const en = {
   colophon: {
     eyebrow: "Colophon",
     title: "Built on other people's work.",
-    lead: "beatrax is a small project standing on a large amount of open-source software. This page names it — the list is authored in the specification and rendered here, so credit cannot quietly drift out of date.",
+    lead: "Beatrax is a small project standing on a large amount of open-source software. This page names it — the list is authored in the specification and rendered here, so credit cannot quietly drift out of date.",
     source: "Read it in the spec",
     readInSpec: "Read the colophon in the specification",
     unavailable: "The list could not be loaded at build time.",

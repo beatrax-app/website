@@ -9,7 +9,7 @@ export const pagesEn: Record<string, Doc> = {
   audience: {
     eyebrow: "Who it's for",
     title: "Built for money that lives in more than one place.",
-    lead: "beatrax is for one person, or a two-person household, whose spending is spread across several banks, cards and payment processors — and who has given up reconciling it by hand.",
+    lead: "Beatrax is for one person, or a two-person household, whose spending is spread across several banks, cards and payment processors — and who has given up reconciling it by hand.",
     sections: [
       {
         heading: "You'll recognise yourself if",
@@ -36,14 +36,14 @@ export const pagesEn: Record<string, Doc> = {
           },
           {
             title: "You've outgrown a spreadsheet",
-            body: "The spreadsheet worked until it needed maintaining. beatrax does the parts you were doing by hand — matching, categorising, spotting the subscription that went up.",
+            body: "The spreadsheet worked until it needed maintaining. Beatrax does the parts you were doing by hand — matching, categorising, spotting the subscription that went up.",
           },
         ],
       },
       {
         heading: "It assumes a little of you",
         body: [
-          "beatrax is a desktop application you install, not a service you sign up for. That's the trade that keeps your data on your machine, and it means a few things are your job.",
+          "Beatrax is a desktop application you install, not a service you sign up for. That's the trade that keeps your data on your machine, and it means a few things are your job.",
         ],
         list: [
           {
@@ -52,11 +52,11 @@ export const pagesEn: Record<string, Doc> = {
           },
           {
             title: "You can export a statement",
-            body: "Log in to your bank, pick a date range, download the file. beatrax reads the formats European banks already offer; the setup wizard shows you where to click for each one.",
+            body: "Log in to your bank, pick a date range, download the file. Beatrax reads the formats European banks already offer; the setup wizard shows you where to click for each one.",
           },
           {
             title: "You keep your own backups",
-            body: "There is no server holding a copy for you. beatrax can produce an encrypted backup, but where it lives is your decision.",
+            body: "There is no server holding a copy for you. Beatrax can produce an encrypted backup, but where it lives is your decision.",
           },
         ],
       },
@@ -66,7 +66,7 @@ export const pagesEn: Record<string, Doc> = {
         list: [
           {
             title: "You bank in one place and like their app",
-            body: "If a single institution already shows you everything you care about, beatrax is solving a problem you don't have.",
+            body: "If a single institution already shows you everything you care about, Beatrax is solving a problem you don't have.",
           },
           {
             title: "You want someone else to hold your data",
@@ -74,7 +74,7 @@ export const pagesEn: Record<string, Doc> = {
           },
           {
             title: "You need multi-user accounting",
-            body: "beatrax is a personal ledger, not bookkeeping software. It has no double-entry accounting, no VAT return, no invoicing and no accountant seat.",
+            body: "Beatrax is a personal ledger, not bookkeeping software. It has no double-entry accounting, no VAT return, no invoicing and no accountant seat.",
           },
           {
             title: "You bank outside Europe",
@@ -95,7 +95,7 @@ export const pagesEn: Record<string, Doc> = {
   licence: {
     eyebrow: "Licence",
     title: "Open source, honestly.",
-    lead: "Every line of beatrax is public, readable, buildable and modifiable. It is also licensed in a way the Open Source Initiative does not certify — and pretending otherwise would be the kind of thing this page exists to avoid.",
+    lead: "Every line of Beatrax is public, readable, buildable and modifiable. It is also licensed in a way the Open Source Initiative does not certify — and pretending otherwise would be the kind of thing this page exists to avoid.",
     sections: [
       {
         heading: "What you can actually do",
@@ -113,8 +113,8 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "Where it diverges",
         body: [
-          "beatrax is licensed under the Hippocratic License 3.0. It grants those freedoms and then adds ethical-use conditions on top — restrictions on using the software to cause specific kinds of harm.",
-          "The Open Source Definition does not allow a licence to restrict a field of endeavour, so any licence with such clauses cannot be OSI-approved, no matter how uncontroversial the restriction. That makes beatrax source-available rather than open source in the OSI sense. Both statements are true at once, and this page would rather say both than pick the flattering one.",
+          "Beatrax is licensed under the Hippocratic License 3.0. It grants those freedoms and then adds ethical-use conditions on top — restrictions on using the software to cause specific kinds of harm.",
+          "The Open Source Definition does not allow a licence to restrict a field of endeavour, so any licence with such clauses cannot be OSI-approved, no matter how uncontroversial the restriction. That makes Beatrax source-available rather than open source in the OSI sense. Both statements are true at once, and this page would rather say both than pick the flattering one.",
         ],
       },
       {
@@ -143,7 +143,7 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "The name",
         body: [
-          "The licence covers the code. The beatrax name and mark are not part of that grant — fork the software freely, but ship your fork under your own name so nobody is misled about what they're installing.",
+          "The licence covers the code. The Beatrax name and mark are not part of that grant — fork the software freely, but ship your fork under your own name so nobody is misled about what they're installing.",
         ],
       },
       {
@@ -168,7 +168,7 @@ export const pagesEn: Record<string, Doc> = {
     lead: "Most privacy pages describe how carefully a company handles your data. This one describes an architecture in which the company never receives it.",
     sections: [
       {
-        heading: "What beatrax collects",
+        heading: "What Beatrax collects",
         tone: "accent",
         body: [
           "Nothing. There is no analytics, no crash reporter, no update ping carrying a device identifier, no error aggregation service, and no account.",
@@ -180,7 +180,7 @@ export const pagesEn: Record<string, Doc> = {
         list: [
           { title: "The ledger", body: "A SQLite database in your operating system's application-support directory. One file. Yours to copy, move, back up or delete." },
           { title: "OAuth tokens", body: "If you connect a mailbox for receipt scanning, the tokens are stored on disk with restrictive file permissions — never transmitted anywhere but the provider they belong to." },
-          { title: "Cached receipts", body: "Email receipts beatrax has matched are cached locally so it doesn't refetch them." },
+          { title: "Cached receipts", body: "Email receipts Beatrax has matched are cached locally so it doesn't refetch them." },
           { title: "Nothing else", body: "No shadow copy, no telemetry queue waiting to flush, no cloud backup you didn't ask for." },
         ],
       },
@@ -210,14 +210,14 @@ export const pagesEn: Record<string, Doc> = {
             ["Exchange rates", "A public rate source, or a bundled offline set", "Bundled rates work fully offline"],
           ],
         },
-        note: "Each is off or offline-capable by default, and none of them route through a beatrax-operated service, because none exists.",
+        note: "Each is off or offline-capable by default, and none of them route through a Beatrax-operated service, because none exists.",
       },
       {
         heading: "What this costs you",
         tone: "warn",
         body: [
           "Local-first is a trade, not a free win. There is no password reset, because there is no account. If you lose every device and every backup, the data is gone — nobody can restore it for you, which is the same property that means nobody can hand it to anyone else either.",
-          "beatrax can produce an encrypted backup and reminds you to. Where you keep it is your decision.",
+          "Beatrax can produce an encrypted backup and reminds you to. Where you keep it is your decision.",
         ],
       },
     ],
@@ -233,7 +233,7 @@ export const pagesEn: Record<string, Doc> = {
   formats: {
     eyebrow: "Compatibility",
     title: "Which banks and formats work.",
-    lead: "beatrax reads the statement formats European banks already export, so it isn't tied to any one institution and doesn't need your banking password.",
+    lead: "Beatrax reads the statement formats European banks already export, so it isn't tied to any one institution and doesn't need your banking password.",
     sections: [
       {
         heading: "Formats it reads",
@@ -242,7 +242,7 @@ export const pagesEn: Record<string, Doc> = {
           rows: [
             ["CAMT.053", "The ISO 20022 XML bank statement. The richest option — most structured detail, most reliable counterparty data.", "Most European banks, often labelled SEPA or ISO 20022"],
             ["MT940", "The older SWIFT statement format. Widely offered, slightly less structured than CAMT.", "Most European banks"],
-            ["CSV", "Per-bank comma-separated exports. beatrax detects the shape for the banks it knows.", "Nearly every bank"],
+            ["CSV", "Per-bank comma-separated exports. Beatrax detects the shape for the banks it knows.", "Nearly every bank"],
             ["ICS PDF", "Monthly credit-card statements as PDF, parsed directly.", "International Card Services"],
             ["PayPal CSV", "The per-transaction details export, not the balance report.", "PayPal"],
           ],
@@ -254,7 +254,7 @@ export const pagesEn: Record<string, Doc> = {
         heading: "What it doesn't do",
         tone: "warn",
         list: [
-          { title: "No screen-scraping", body: "beatrax never asks for your online banking password and never logs in as you." },
+          { title: "No screen-scraping", body: "Beatrax never asks for your online banking password and never logs in as you." },
           { title: "No unsupported-bank guarantee", body: "If your bank exports only a bespoke CSV nobody has mapped, you'll do some column-mapping yourself." },
           { title: "Open banking is optional", body: "There is a connector for automatic fetching, but it is off by default and needs your own aggregator API key. File import is the primary path, deliberately." },
         ],
@@ -262,14 +262,14 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "Coming from another app",
         body: [
-          "If you already keep a budget elsewhere, beatrax can import it rather than making you start over. YNAB, nYNAB and Actual Budget exports bring across categories, budget history, transactions, splits and cleared status.",
+          "If you already keep a budget elsewhere, Beatrax can import it rather than making you start over. YNAB, nYNAB and Actual Budget exports bring across categories, budget history, transactions, splits and cleared status.",
         ],
       },
     ],
     cta: {
       label: "Migrating from another app",
       href: "/migrate",
-      secondaryLabel: "Download beatrax",
+      secondaryLabel: "Download Beatrax",
       secondaryHref: "/download",
     },
   },
@@ -277,7 +277,7 @@ export const pagesEn: Record<string, Doc> = {
   // ── Download ────────────────────────────────────────────────────
   download: {
     eyebrow: "Install",
-    title: "Download beatrax.",
+    title: "Download Beatrax.",
     lead: "A desktop application for macOS, Windows and Linux. Signed installers, published with checksums so you can verify what you downloaded.",
     sections: [
       {
@@ -296,7 +296,7 @@ export const pagesEn: Record<string, Doc> = {
           rows: [
             ["Operating system", "macOS on Apple Silicon, Windows 10 or later, or a current Linux distribution"],
             ["Disk", "A few hundred megabytes, plus your ledger — which stays small; years of transactions are measured in megabytes"],
-            ["Network", "Only for the optional features. beatrax works fully offline"],
+            ["Network", "Only for the optional features. Beatrax works fully offline"],
             ["An account", "None. There is nothing to sign up for"],
           ],
         },
@@ -311,7 +311,7 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "First run",
         body: [
-          "beatrax opens on a setup wizard: your bank, your credit card, PayPal, and optionally your email receipts. Every step can be skipped and picked up later from Settings, so you can start with one statement and add the rest whenever.",
+          "Beatrax opens on a setup wizard: your bank, your credit card, PayPal, and optionally your email receipts. Every step can be skipped and picked up later from Settings, so you can start with one statement and add the rest whenever.",
         ],
       },
     ],
@@ -327,7 +327,7 @@ export const pagesEn: Record<string, Doc> = {
   migrate: {
     eyebrow: "Switching",
     title: "Bring your budget with you.",
-    lead: "If you already keep a budget in YNAB, nYNAB or Actual Budget, beatrax imports it rather than making you start from an empty ledger.",
+    lead: "If you already keep a budget in YNAB, nYNAB or Actual Budget, Beatrax imports it rather than making you start from an empty ledger.",
     sections: [
       {
         heading: "What comes across",
@@ -345,7 +345,7 @@ export const pagesEn: Record<string, Doc> = {
         list: [
           { title: "Nothing lands until you approve it", body: "The import stages everything first and shows a summary. You promote it into your ledger, or you don't." },
           { title: "Re-running changes nothing", body: "Import the same export twice and the second run is a no-op — every row is fingerprinted." },
-          { title: "It tells you what it couldn't map", body: "Anything without a home in beatrax's model is listed as an unmapped-items summary rather than dropped silently." },
+          { title: "It tells you what it couldn't map", body: "Anything without a home in Beatrax's model is listed as an unmapped-items summary rather than dropped silently." },
           { title: "Merging is three-way", body: "If you import into a ledger that already has data, conflicting records are reconciled rather than duplicated." },
         ],
       },
@@ -359,7 +359,7 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "Coming from a bank app or a spreadsheet",
         body: [
-          "There is no importer for those, because there is nothing standard to import. Start instead with a statement export — most banks will give you the last year or more in one file, and beatrax will reconstruct your history from it, detect the recurring charges, and resolve the counterparties as it goes.",
+          "There is no importer for those, because there is nothing standard to import. Start instead with a statement export — most banks will give you the last year or more in one file, and Beatrax will reconstruct your history from it, detect the recurring charges, and resolve the counterparties as it goes.",
         ],
       },
     ],
@@ -374,7 +374,7 @@ export const pagesEn: Record<string, Doc> = {
   // ── Compare ─────────────────────────────────────────────────────
   compare: {
     eyebrow: "Alternatives",
-    title: "How beatrax differs.",
+    title: "How Beatrax differs.",
     lead: "There are good tools in this category. The honest way to compare them is not feature counts but structure: where your data lives, how it pays for itself, and how transactions get in.",
     sections: [
       {
@@ -382,7 +382,7 @@ export const pagesEn: Record<string, Doc> = {
         table: {
           head: ["", "Where data lives", "Business model", "How transactions arrive", "Source readable"],
           rows: [
-            ["beatrax", "Your machine only", "Free, no paid tier", "Statement files you export; optional open banking with your own key", "Yes"],
+            ["Beatrax", "Your machine only", "Free, no paid tier", "Statement files you export; optional open banking with your own key", "Yes"],
             ["Dyme", "The provider's cloud", "Paid subscription", "Bank link via PSD2", "No"],
             ["YNAB", "The provider's cloud", "Paid subscription", "Bank sync, or file import", "No"],
             ["Actual Budget", "Your server, or their hosted option", "Free self-hosted; paid hosting available", "File import; bank sync via add-ons", "Yes"],
@@ -393,13 +393,13 @@ export const pagesEn: Record<string, Doc> = {
         note: "This summarises each product's publicly described model, not a feature-by-feature audit, and deliberately quotes no prices — those change. If something here is wrong or out of date, please open an issue and it will be corrected.",
       },
       {
-        heading: "What the paid apps charge for, and what beatrax does instead",
+        heading: "What the paid apps charge for, and what Beatrax does instead",
         tone: "accent",
         body: [
-          "Dyme, YNAB and their peers charge a monthly or yearly subscription. Almost everything that subscription buys, beatrax does too — for nothing, because there is no service to run and therefore nothing to bill for.",
+          "Dyme, YNAB and their peers charge a monthly or yearly subscription. Almost everything that subscription buys, Beatrax does too — for nothing, because there is no service to run and therefore nothing to bill for.",
         ],
         table: {
-          head: ["What you'd pay for", "beatrax"],
+          head: ["What you'd pay for", "Beatrax"],
           rows: [
             ["All your accounts in one overview", "Yes — bank, credit card, PayPal and app-store subscriptions in one ledger"],
             ["Automatic categorisation that learns", "Yes — merchant memory plus a rules engine you can author yourself"],
@@ -426,7 +426,7 @@ export const pagesEn: Record<string, Doc> = {
         list: [
           {
             title: "Transactions do not arrive by themselves",
-            body: "Dyme and YNAB link to your bank and update on their own. With beatrax you export a statement and drop it in — a few minutes a month. There is an open-banking connector, but it is off by default and needs your own aggregator key.",
+            body: "Dyme and YNAB link to your bank and update on their own. With Beatrax you export a statement and drop it in — a few minutes a month. There is an open-banking connector, but it is off by default and needs your own aggregator key.",
           },
           {
             title: "No support desk",
@@ -442,7 +442,7 @@ export const pagesEn: Record<string, Doc> = {
           },
           {
             title: "Fewer eyes, fewer years",
-            body: "A subscription funds a team, a roadmap and a support rota. beatrax is a small project. It is younger, it has been tested by fewer people, and its future depends on interest rather than revenue.",
+            body: "A subscription funds a team, a roadmap and a support rota. Beatrax is a small project. It is younger, it has been tested by fewer people, and its future depends on interest rather than revenue.",
           },
           {
             title: "No shared household accounts or advice features",
@@ -453,21 +453,21 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "Against the self-hosted open tools",
         body: [
-          "Actual Budget and Firefly III share beatrax's instinct that your ledger should be yours. The difference is what running it costs you.",
-          "Both are, in their full form, server software: something to host, update, back up and secure. beatrax is a desktop application — it installs like any other program and syncs peer-to-peer between your own devices, so there is no server in the picture at all, not even one you own.",
+          "Actual Budget and Firefly III share Beatrax's instinct that your ledger should be yours. The difference is what running it costs you.",
+          "Both are, in their full form, server software: something to host, update, back up and secure. Beatrax is a desktop application — it installs like any other program and syncs peer-to-peer between your own devices, so there is no server in the picture at all, not even one you own.",
         ],
         list: [
           { title: "No server to run", body: "No container, no reverse proxy, no certificate renewal, no database to maintain." },
           { title: "European bank formats read natively", body: "CAMT.053, MT940 and ICS credit-card PDFs are first-class inputs, not add-ons." },
-          { title: "Funding chains", body: "Linking a card purchase to the bulk settlement that paid for it is the problem beatrax was built around; the others generally treat those as unrelated rows." },
-          { title: "But Actual is OSI open source", body: "If OSI-approved licensing is a hard requirement for you, Actual meets it and beatrax does not. That is a real difference and it is stated plainly." },
+          { title: "Funding chains", body: "Linking a card purchase to the bulk settlement that paid for it is the problem Beatrax was built around; the others generally treat those as unrelated rows." },
+          { title: "But Actual is OSI open source", body: "If OSI-approved licensing is a hard requirement for you, Actual meets it and Beatrax does not. That is a real difference and it is stated plainly." },
         ],
       },
       {
         heading: "Against your bank's own app",
         body: [
           "Your bank's app is genuinely the best tool for looking at that bank. It is real-time, it is free, and it needs no setup.",
-          "It simply cannot see the other accounts. If your money only lives in one place, use it. beatrax exists for the case where the picture is split across a current account, a credit card from a different company, PayPal in between, and app-store subscriptions that settle somewhere you have to go looking for.",
+          "It simply cannot see the other accounts. If your money only lives in one place, use it. Beatrax exists for the case where the picture is split across a current account, a credit card from a different company, PayPal in between, and app-store subscriptions that settle somewhere you have to go looking for.",
         ],
       },
     ],
@@ -483,19 +483,19 @@ export const pagesEn: Record<string, Doc> = {
   sync: {
     eyebrow: "Architecture",
     title: "How sync works without a server.",
-    lead: "beatrax syncs between your own devices, end-to-end encrypted, with no account and no service in the middle that can read anything. This is roughly how.",
+    lead: "Beatrax syncs between your own devices, end-to-end encrypted, with no account and no service in the middle that can read anything. This is roughly how.",
     sections: [
       {
         heading: "The problem with a normal sync",
         body: [
           "The usual way to sync an app is to put the data in a server and have every device talk to it. That server becomes the source of truth, which means it can read everything, and it means somebody has to run and pay for it forever.",
-          "beatrax takes the other route: every device holds a full copy, and they reconcile with each other directly.",
+          "Beatrax takes the other route: every device holds a full copy, and they reconcile with each other directly.",
         ],
       },
       {
         heading: "Every change is an entry in a log",
         body: [
-          "Rather than syncing the database, beatrax syncs the history of changes to it. Each edit becomes an entry in an append-only log, signed by the device that made it and stamped with a hybrid logical clock so entries from different devices can be ordered consistently even when their wall clocks disagree.",
+          "Rather than syncing the database, Beatrax syncs the history of changes to it. Each edit becomes an entry in an append-only log, signed by the device that made it and stamped with a hybrid logical clock so entries from different devices can be ordered consistently even when their wall clocks disagree.",
           "The database is then a materialised view of that merged log — replay the log and you get the same database, deterministically. Two devices that have seen the same entries always arrive at the same state.",
         ],
       },
@@ -547,7 +547,7 @@ export const pagesEn: Record<string, Doc> = {
   security: {
     eyebrow: "Security",
     title: "What is protected, and from what.",
-    lead: "A finance application deserves a stated threat model rather than reassuring adjectives. Here is what beatrax defends against, and what it does not.",
+    lead: "A finance application deserves a stated threat model rather than reassuring adjectives. Here is what Beatrax defends against, and what it does not.",
     sections: [
       {
         heading: "What it defends against",
@@ -567,7 +567,7 @@ export const pagesEn: Record<string, Doc> = {
           { title: "Malware already running as you", body: "Software running with your privileges on your own machine can read what you can read. No application-level encryption survives that." },
           { title: "A weak passphrase", body: "At-rest encryption derives from what you choose. A guessable passphrase is a guessable key." },
           { title: "Losing everything at once", body: "No devices and no backups means no recovery. Nobody holds a copy — that is the same property that keeps it private." },
-          { title: "What your bank or mail provider knows", body: "beatrax cannot change what they already hold; it only avoids adding another party." },
+          { title: "What your bank or mail provider knows", body: "Beatrax cannot change what they already hold; it only avoids adding another party." },
         ],
       },
       {
@@ -597,13 +597,13 @@ export const pagesEn: Record<string, Doc> = {
   community: {
     eyebrow: "Community",
     title: "The bit that only gets better with people.",
-    lead: "beatrax ships with a community corpus: a shared, human-curated set of patterns that turn cryptic statement descriptors into names you recognise. It is the one part of the product that improves because someone contributed, not because someone shipped a release.",
+    lead: "Beatrax ships with a community corpus: a shared, human-curated set of patterns that turn cryptic statement descriptors into names you recognise. It is the one part of the product that improves because someone contributed, not because someone shipped a release.",
     sections: [
       {
         heading: "The problem it solves",
         body: [
           "A bank statement does not say \"Albert Heijn\". It says something closer to a till number, a city, a payment-terminal identifier and an abbreviation, jammed together. Multiply that by every shop, utility, tax office and subscription you deal with, and a fresh ledger is a wall of noise.",
-          "beatrax already learns from what you correct — label a counterparty once and every transaction sharing that IBAN follows. The corpus is the head start: a shared body of knowledge so the first import already knows what most of those descriptors mean.",
+          "Beatrax already learns from what you correct — label a counterparty once and every transaction sharing that IBAN follows. The corpus is the head start: a shared body of knowledge so the first import already knows what most of those descriptors mean.",
         ],
       },
       {
@@ -627,11 +627,11 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "How to contribute",
         body: [
-          "When beatrax meets a merchant it cannot name, the transaction detail offers to suggest a mapping. Filling that in opens a pre-filled pull request in your browser against the product repository — you review it, you submit it, and nothing is sent anywhere until you do.",
+          "When Beatrax meets a merchant it cannot name, the transaction detail offers to suggest a mapping. Filling that in opens a pre-filled pull request in your browser against the product repository — you review it, you submit it, and nothing is sent anywhere until you do.",
           "You can also edit the corpus files directly. They are plain YAML, one file per country, and an entry is a single line.",
         ],
         list: [
-          { title: "From inside the app", body: "Suggest a mapping on any unrecognised counterparty; beatrax composes the change and opens the draft for you." },
+          { title: "From inside the app", body: "Suggest a mapping on any unrecognised counterparty; Beatrax composes the change and opens the draft for you." },
           { title: "From the repository", body: "Edit resources/corpus/merchants/<country>.yaml and open a pull request. Pattern, name, and optionally a category." },
           { title: "A country that isn't listed", body: "Add the file. A new country corpus needs no code change — the loader picks it up from the filename." },
         ],

@@ -1,7 +1,7 @@
 /*
  * Design tokens — the single source of truth for the site's look.
  *
- * The primitives are lifted verbatim from the beatrax app's own theme
+ * The primitives are lifted verbatim from the Beatrax app's own theme
  * (resources/css/app.css in the product repo), so the marketing site and the
  * product render from one palette. The app ships light and dark; the site
  * leads with dark because that is how the screenshots were captured and how

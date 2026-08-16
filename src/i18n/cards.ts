@@ -27,7 +27,7 @@ const featuresEn: CardSet = {
   },
   chains: {
     title: "Funding chains, resolved",
-    body: "PayPal funded by your bank, a card purchase settled weeks later in a bulk SEPA debit — beatrax links both ends and shows the fan-out.",
+    body: "PayPal funded by your bank, a card purchase settled weeks later in a bulk SEPA debit — Beatrax links both ends and shows the fan-out.",
   },
   calendar: {
     title: "Bills on a calendar",
@@ -47,7 +47,7 @@ const featuresEn: CardSet = {
   },
   goals: {
     title: "Savings goals",
-    body: "Set a target and a date; beatrax derives the finish date from your actual cash flow rather than wishful arithmetic.",
+    body: "Set a target and a date; Beatrax derives the finish date from your actual cash flow rather than wishful arithmetic.",
   },
   pots: {
     title: "Pots inside one balance",
@@ -75,7 +75,7 @@ const featuresEn: CardSet = {
   },
   triage: {
     title: "Triage unknown counterparties",
-    body: "A transaction from an IBAN beatrax has never seen lands here with its recent activity. Name it once and every transaction sharing that IBAN is labelled.",
+    body: "A transaction from an IBAN Beatrax has never seen lands here with its recent activity. Name it once and every transaction sharing that IBAN is labelled.",
   },
   uncategorized: {
     title: "A categorisation inbox",
@@ -114,7 +114,7 @@ const featuresNl: CardSet = {
   },
   chains: {
     title: "Betaalketens, ontrafeld",
-    body: "PayPal gefinancierd door je bank, een creditcardaankoop die weken later in een bulkincasso wordt afgerekend — beatrax verbindt beide kanten en toont de vertakking.",
+    body: "PayPal gefinancierd door je bank, een creditcardaankoop die weken later in een bulkincasso wordt afgerekend — Beatrax verbindt beide kanten en toont de vertakking.",
   },
   calendar: {
     title: "Vaste lasten op een kalender",
@@ -134,7 +134,7 @@ const featuresNl: CardSet = {
   },
   goals: {
     title: "Spaardoelen",
-    body: "Stel een bedrag en een datum in; beatrax leidt de einddatum af uit je werkelijke kasstroom in plaats van uit hoopvol rekenwerk.",
+    body: "Stel een bedrag en een datum in; Beatrax leidt de einddatum af uit je werkelijke kasstroom in plaats van uit hoopvol rekenwerk.",
   },
   pots: {
     title: "Potjes binnen één saldo",
@@ -162,7 +162,7 @@ const featuresNl: CardSet = {
   },
   triage: {
     title: "Onbekende tegenpartijen triëren",
-    body: "Een transactie van een IBAN dat beatrax nog nooit zag komt hier binnen met de recente activiteit. Geef het één keer een naam en elke transactie op dat IBAN krijgt het label.",
+    body: "Een transactie van een IBAN dat Beatrax nog nooit zag komt hier binnen met de recente activiteit. Geef het één keer een naam en elke transactie op dat IBAN krijgt het label.",
   },
   uncategorized: {
     title: "Een categorisatie-inbox",

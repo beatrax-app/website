@@ -4,7 +4,7 @@
 // step with the structure.
 
 export const site = {
-  name: "beatrax",
+  name: "Beatrax",
   org: "beatrax-app",
   githubOrg: "https://github.com/beatrax-app",
   repo: "https://github.com/beatrax-app/beatrax",
@@ -85,7 +85,7 @@ export const wizardSteps = [
   "9-done",
 ];
 
-// The formats beatrax ingests, shown as a strip. `note` keys into the
+// The formats Beatrax ingests, shown as a strip. `note` keys into the
 // locale dictionaries.
 export const formats = [
   { key: "camt", label: "CAMT.053" },

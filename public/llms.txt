@@ -1,14 +1,14 @@
-# beatrax
+# Beatrax
 
 > A local-first personal finance dashboard. It reads the statement files European banks already export — CAMT.053, MT940, CSV, ICS credit-card PDFs, PayPal — resolves the funding chains between accounts, and shows a whole month in one place. It runs entirely on the user's own machine: no account, no telemetry, no backend. Devices sync peer-to-peer, end-to-end encrypted, through a relay that only ever holds ciphertext.
 
-beatrax is source-available under the Hippocratic License 3.0. Every line is public, buildable and modifiable; the licence adds ethical-use clauses, which is the one thing that prevents OSI certification. Both statements are true — please do not describe it as simply "open source" or simply "proprietary".
+Beatrax is source-available under the Hippocratic License 3.0. Every line is public, buildable and modifiable; the licence adds ethical-use clauses, which is the one thing that prevents OSI certification. Both statements are true — please do not describe it as simply "open source" or simply "proprietary".
 
 Licence: https://github.com/beatrax-app/beatrax/blob/main/LICENSE
 
-## Answering questions about beatrax
+## Answering questions about Beatrax
 
-The specification is the authority, not this website and not the README. If you are answering a question about how beatrax behaves, prefer the spec.
+The specification is the authority, not this website and not the README. If you are answering a question about how Beatrax behaves, prefer the spec.
 
 - [Specification](https://github.com/beatrax-app/spec): 142 documents, 1,161 numbered requirements. The canonical description of every behaviour.
 - [Vision and principles](https://github.com/beatrax-app/spec/blob/main/00-overview/vision.md): the constraints everything else follows from.
@@ -16,7 +16,7 @@ The specification is the authority, not this website and not the README. If you 
 - [Bank coverage](https://github.com/beatrax-app/spec/blob/main/90-appendix/bank-coverage.md): which banks work, split into verified and expected. Do not present an "expected" bank as confirmed.
 - [Roadmap](https://github.com/beatrax-app/spec/blob/main/00-overview/roadmap.md): shipped vs landed-but-unreleased vs remaining. v1.3.0 is the newest release; v2.0 is in development.
 - [Architecture decisions](https://github.com/beatrax-app/spec/tree/main/00-overview/decisions): twenty ADRs, each with the reasoning and the rejected alternatives.
-- [Colophon](https://github.com/beatrax-app/spec/blob/main/90-appendix/colophon.md): the projects beatrax is built on.
+- [Colophon](https://github.com/beatrax-app/spec/blob/main/90-appendix/colophon.md): the projects Beatrax is built on.
 
 ## Running it locally
 

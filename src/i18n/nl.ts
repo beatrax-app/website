@@ -13,7 +13,7 @@ export const nl: Copy = {
     lang: "nl",
     tagline: "Al je rekeningen in één rustig overzicht",
     description:
-      "beatrax is een local-first dashboard voor je persoonlijke financiën. Het leest de afschriften die je bank toch al exporteert, legt verbanden tussen je rekeningen, en toont je hele maand op één plek. Er verlaat niets je computer.",
+      "Beatrax is een local-first dashboard voor je persoonlijke financiën. Het leest de afschriften die je bank toch al exporteert, legt verbanden tussen je rekeningen, en toont je hele maand op één plek. Er verlaat niets je computer.",
   },
 
   nav: {
@@ -39,12 +39,12 @@ export const nl: Copy = {
     eyebrow: "Local-first · open source met ethische clausules",
     titleLead: "Alle rekeningen.",
     titleAccent: "Eén rustig overzicht.",
-    body: "beatrax brengt je bank, creditcard, PayPal en app-store-abonnementen samen in één beeld van de maand — en legt daarna de ketens bloot, zodat je ziet wat er werkelijk waarvoor betaald heeft.",
+    body: "Beatrax brengt je bank, creditcard, PayPal en app-store-abonnementen samen in één beeld van de maand — en legt daarna de ketens bloot, zodat je ziet wat er werkelijk waarvoor betaald heeft.",
     ctaPrimary: "Download voor desktop",
     ctaSecondary: "Bekijk hoe het werkt",
     proof: "Geen telemetrie · geen cloudaccount · geen syncserver die niet van jou is",
     shotAlt:
-      "Het beatrax-dashboard met drift-alerts, ongebruikelijke afschrijvingen, inkomsten en uitgaven van de maand, en de voortgang van spaardoelen.",
+      "Het Beatrax-dashboard met drift-alerts, ongebruikelijke afschrijvingen, inkomsten en uitgaven van de maand, en de voortgang van spaardoelen.",
   },
 
   promises: {
@@ -61,7 +61,7 @@ export const nl: Copy = {
       },
       {
         title: "Het legt de ketens bloot",
-        body: "Een PayPal-betaling die door je bank gefinancierd is. Een creditcardaankoop die weken later in één bulkincasso wordt afgerekend. beatrax verbindt beide kanten, zodat een transactie geen raadsel meer is maar een antwoord.",
+        body: "Een PayPal-betaling die door je bank gefinancierd is. Een creditcardaankoop die weken later in één bulkincasso wordt afgerekend. Beatrax verbindt beide kanten, zodat een transactie geen raadsel meer is maar een antwoord.",
       },
     ],
   },
@@ -70,7 +70,7 @@ export const nl: Copy = {
     eyebrow: "Het probleem dat het oplost",
     title: "Je geld staat verspreid over zes afschriften die elkaar tegenspreken.",
     body: "De bank toont een creditcardafrekening van € 225. Het cardafschrift toont vijftien aankopen. PayPal toont een bestelling die de bank een overboeking noemt. Elke maand bouw je datzelfde overzicht met de hand opnieuw op, en elke maand haak je halverwege af.",
-    lead: "beatrax doet die reconciliatie één keer, en blijft het daarna doen.",
+    lead: "Beatrax doet die reconciliatie één keer, en blijft het daarna doen.",
     points: [
       "Koppelt een creditcardaankoop aan de bulkafrekening die hem betaald heeft.",
       "Geeft een naam aan de tegenpartij achter een IBAN die je nog nooit gezien hebt.",
@@ -98,7 +98,7 @@ export const nl: Copy = {
         body: "De setup-wizard loodst je langs je bank, je creditcard, PayPal en — als je dat wilt — je e-mailbonnen. Elke stap is over te slaan en later opnieuw te doen.",
       },
       {
-        title: "beatrax leest en ontdubbelt",
+        title: "Beatrax leest en ontdubbelt",
         body: "Het herkent het formaat, geeft elke regel een vingerafdruk zodat hetzelfde bestand opnieuw importeren niets verandert, en zoekt de tegenpartij achter elk IBAN op.",
       },
       {
@@ -115,7 +115,7 @@ export const nl: Copy = {
   privacy: {
     eyebrow: "Privacy",
     title: "Er is geen server om te vertrouwen.",
-    body: "beatrax heeft geen backend. Geen account, geen telemetrie, geen crashmelder die naar huis belt, en geen gehoste kopie van je administratie. De SQLite-database staat in je application-support-map en is van jou om te bewaren, te verplaatsen of te verwijderen.",
+    body: "Beatrax heeft geen backend. Geen account, geen telemetrie, geen crashmelder die naar huis belt, en geen gehoste kopie van je administratie. De SQLite-database staat in je application-support-map en is van jou om te bewaren, te verplaatsen of te verwijderen.",
     points: [
       {
         title: "Sync gaat peer-to-peer",
@@ -127,7 +127,7 @@ export const nl: Copy = {
       },
       {
         title: "Open banking blijft optioneel",
-        body: "De koppeling staat standaard uit en vraagt om je eigen sleutel bij de aggregator. Staat hij aan, dan praat jouw machine rechtstreeks met die aggregator — er zit geen beatrax-server tussen, want die bestaat niet.",
+        body: "De koppeling staat standaard uit en vraagt om je eigen sleutel bij de aggregator. Staat hij aan, dan praat jouw machine rechtstreeks met die aggregator — er zit geen Beatrax-server tussen, want die bestaat niet.",
       },
     ],
   },
@@ -144,9 +144,9 @@ export const nl: Copy = {
 
   banks: {
     verifiedTitle: "Geverifieerd",
-    verifiedBody: "Vormen die beatrax expliciet herkent, met een adapter of headerprofiel en tests erachter. Worden automatisch herkend zodra je uploadt.",
+    verifiedBody: "Vormen die Beatrax expliciet herkent, met een adapter of headerprofiel en tests erachter. Worden automatisch herkend zodra je uploadt.",
     expectedTitle: "Werkt naar verwachting",
-    expectedBody: "Deze instellingen bieden hun rekeninghouders CAMT.053 of MT940, en dat leest beatrax generiek. Ze zijn niet stuk voor stuk getest — gaat er één mis op een bestand dat aan de standaard voldoet, dan is dat een bug om te melden, geen niet-ondersteunde bank.",
+    expectedBody: "Deze instellingen bieden hun rekeninghouders CAMT.053 of MT940, en dat leest Beatrax generiek. Ze zijn niet stuk voor stuk getest — gaat er één mis op een bestand dat aan de standaard voldoet, dan is dat een bug om te melden, geen niet-ondersteunde bank.",
     colBank: "Instelling",
     colCountry: "Land",
     colFormats: "Formaten",
@@ -213,7 +213,7 @@ export const nl: Copy = {
 
   cta: {
     title: "Lees de broncode. Draai hem zelf.",
-    body: "Elke regel van beatrax is openbaar: lezen, bouwen, aanpassen, forken. De licentie voegt daar ethische gebruiksvoorwaarden aan toe, en dat is het enige dat OSI-certificering in de weg staat — het verschil en de onderbouwing staan er volledig uitgeschreven.",
+    body: "Elke regel van Beatrax is openbaar: lezen, bouwen, aanpassen, forken. De licentie voegt daar ethische gebruiksvoorwaarden aan toe, en dat is het enige dat OSI-certificering in de weg staat — het verschil en de onderbouwing staan er volledig uitgeschreven.",
     repo: "Bekijk de code",
     spec: "Lees de specificatie",
   },
@@ -234,7 +234,7 @@ export const nl: Copy = {
   contribute: {
     eyebrow: "Bijdragen",
     title: "Het project wordt beter met jou erbij.",
-    lead: "beatrax wordt in het openbaar gebouwd onder een licentie met ethische gebruiksclausules. Je kunt elke regel lezen, het zelf draaien en het aanpassen. Deze pagina vertelt wat je concreet doet — de regels hieronder komen rechtstreeks uit de specificatie, dus het zijn dezelfde regels die een reviewer toepast.",
+    lead: "Beatrax wordt in het openbaar gebouwd onder een licentie met ethische gebruiksclausules. Je kunt elke regel lezen, het zelf draaien en het aanpassen. Deze pagina vertelt wat je concreet doet — de regels hieronder komen rechtstreeks uit de specificatie, dus het zijn dezelfde regels die een reviewer toepast.",
 
     routesTitle: "Vier manieren om in te stappen, oplopend in moeite.",
     routesBody: "Niet elke waardevolle bijdrage is code. De eerste op deze lijst is wat het product het hardst nodig heeft en vraagt geen enkele lokale installatie.",
@@ -251,7 +251,7 @@ export const nl: Copy = {
       },
       spec: {
         title: "Wijzig de specificatie",
-        body: "Gedrag wordt gespecificeerd voordat het geschreven wordt. Wil je dat beatrax iets anders doet, dan landt de specificatiewijziging eerst en verwijst de code ernaar.",
+        body: "Gedrag wordt gespecificeerd voordat het geschreven wordt. Wil je dat Beatrax iets anders doet, dan landt de specificatiewijziging eerst en verwijst de code ernaar.",
         cta: "Lees het wijzigingsproces",
       },
       code: {
@@ -273,7 +273,7 @@ export const nl: Copy = {
     rulesBody: "Dit zijn geen reviewvoorkeuren. Ze worden door tests gecontroleerd, dus een wijziging die er één breekt laat de build falen in plaats van een opmerking op te leveren.",
 
     docsTitle: "Wat verder het lezen waard is.",
-    docsBody: "De specificatie is leidend voor hoe beatrax zich gedraagt — boven deze website en boven elke README.",
+    docsBody: "De specificatie is leidend voor hoe Beatrax zich gedraagt — boven deze website en boven elke README.",
     docContributing: "Bijdragegids",
     docStandards: "Codestandaarden",
     docComments: "Commentaarbeleid",
@@ -317,7 +317,7 @@ export const nl: Copy = {
   colophon: {
     eyebrow: "Colofon",
     title: "Gebouwd op het werk van anderen.",
-    lead: "beatrax is een klein project dat op een grote hoeveelheid opensourcesoftware staat. Deze pagina noemt die bij naam — de lijst staat in de specificatie en wordt hier weergegeven, zodat de vermelding niet stilletjes veroudert.",
+    lead: "Beatrax is een klein project dat op een grote hoeveelheid opensourcesoftware staat. Deze pagina noemt die bij naam — de lijst staat in de specificatie en wordt hier weergegeven, zodat de vermelding niet stilletjes veroudert.",
     source: "Lees het in de specificatie",
     readInSpec: "Lees het colofon in de specificatie",
     unavailable: "De lijst kon bij het bouwen niet geladen worden.",
