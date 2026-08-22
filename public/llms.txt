@@ -74,4 +74,4 @@ The easiest genuinely useful contribution is the [community corpus](https://gith
 
 - [Website source](https://github.com/beatrax-app/website)
 - [Organisation](https://github.com/beatrax-app)
-- [Community chat](https://discord.gg/FYuV9CbTHR)
+- [Community chat](https://discord.nightworks.io)
