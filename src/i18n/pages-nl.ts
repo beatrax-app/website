@@ -193,7 +193,7 @@ export const pagesNl: Record<string, Doc> = {
         list: [
           { title: "Koppelen is een bewuste handeling", body: "Een nieuw apparaat doet mee door een QR-code te scannen of een woordcode in te typen, en beide kanten bevestigen hetzelfde veiligheidsnummer voordat er iets stroomt." },
           { title: "Rechtstreeks over je eigen netwerk", body: "Staan twee gekoppelde apparaten allebei aan op hetzelfde netwerk, dan vinden ze elkaar en synchroniseren ze direct. Er verlaat niets je huis." },
-          { title: "De relay ziet alleen versleutelde tekst", body: "Is één apparaat offline, dan wachten wijzigingen in een doorgeefrelay. Die bewaart versleutelde bytes waar hij geen sleutel voor heeft, en vergeet ze zodra ze bezorgd zijn." },
+          { title: "Een relay is om te koppelen, niet voor je administratie", body: "Transacties gaan nooit door een relay. Slaapt het andere apparaat, dan blijven de wijzigingen staan op het apparaat dat ze maakte tot ze allebei wakker op hetzelfde netwerk zijn. Een relay bestaat zodat twee apparaten de koppeling kunnen afronden en sleutels kunnen uitwisselen wanneer ze elkaar niet rechtstreeks kunnen bereiken — die sleutels zijn verzegeld voor het ontvangende apparaat, maar de koppelberichten zelf zijn niet versleuteld, dus wie er één draait ziet apparaat-id's, publieke sleutels en de naam die je een apparaat gaf." },
           { title: "Ook versleuteld op schijf", body: "Elk apparaat versleutelt zijn eigen kopie met een sleutel die uit je wachtwoordzin is afgeleid en pas vrijkomt als je de app ontgrendelt." },
           { title: "Een apparaat verwijderen trekt het in", body: "Verwijder je een apparaat, dan wordt de gedeelde sleutel geroteerd en opnieuw verpakt voor de apparaten die je houdt, zodat het verwijderde niets meer kan lezen." },
         ],
@@ -515,10 +515,10 @@ export const pagesNl: Record<string, Doc> = {
         ],
       },
       {
-        heading: "Direct als het kan, via een relay als het moet",
+        heading: "Altijd rechtstreeks, een relay alleen om te koppelen",
         body: [
-          "Twee apparaten die aan staan op hetzelfde netwerk vinden elkaar en synchroniseren rechtstreeks — er verlaat niets je huis. Slaapt er één, dan wachten wijzigingen in een doorgeefrelay.",
-          "Die relay is met opzet oninteressant: hij bewaart versleutelde tekst waar hij geen sleutel voor heeft, kan niet zien wat er veranderd is, en vergeet het zodra het bezorgd is. Een brievenbus, geen database.",
+          "Twee apparaten die aan staan op hetzelfde netwerk vinden elkaar en synchroniseren rechtstreeks — er verlaat niets je huis. Slaapt er één, dan blijven de wijzigingen staan op het apparaat dat ze maakte en gaan ze over zodra ze allebei weer wakker op hetzelfde netwerk zijn. Een tweede weg is er niet: een transactie gaat uitsluitend over de rechtstreekse verbinding tussen twee van je eigen apparaten.",
+          "Een relay is optioneel, en er één opzetten of aanwijzen doe je zelf. Hij bestaat voor één taak: twee apparaten de koppeling laten afronden en versleutelingssleutels laten uitwisselen wanneer ze elkaar niet rechtstreeks kunnen bereiken. Het is de moeite waard om ronduit te zeggen wat daar dan ligt. De sleuteloverdracht is verzegeld voor het ontvangende apparaat, dus wie de relay draait krijgt hem niet open. De koppelberichten zijn dat niet: daarin staan de twee apparaat-id's, de publieke sleutels en de naam die je een apparaat gaf, en het bevestigende bericht is ondertekend — te lezen, maar niet te vervalsen of te wijzigen. Een relay ziet daarnaast metadata: groottes, timing, en welke apparaat-id's verkeer uitwisselen. Wat hij nooit ziet is een transactie, een bedrag of een tegenpartij.",
         ],
         tone: "accent",
       },
@@ -553,7 +553,7 @@ export const pagesNl: Record<string, Doc> = {
       {
         heading: "Waar het tegen beschermt",
         cards: [
-          { title: "Een gecompromitteerde of vijandige relay", body: "De sync-relay bewaart alleen versleutelde tekst waar hij geen sleutel voor heeft. Er één draaien geeft geen leestoegang." },
+          { title: "Een gecompromitteerde of vijandige relay", body: "Transacties gaan nooit door een relay, dus er één draaien geeft geen toegang tot je administratie. De sleuteloverdracht die er wel langskomt is verzegeld voor het ontvangende apparaat, en ertussen gaan zitten kan hij niet — het veiligheidsnummer dat je vergelijkt dekt de sleutels." },
           { title: "Iemand op je netwerk", body: "Sessies tussen apparaten zijn wederzijds geauthenticeerd en forward-secret, dus een meeluisteraar leert niets en kan later niets afspelen." },
           { title: "Een gestolen laptop", body: "Met de app-vergrendeling aan zijn gevoelige velden op schijf versleuteld en komt de sleutel alleen vrij met je pincode of biometrie." },
           { title: "Een apparaat dat je niet meer vertrouwt", body: "Verwijderen roteert de groepssleutel en verpakt hem opnieuw voor de rest, waarmee het wordt afgesneden van alles daarna." },
@@ -569,6 +569,7 @@ export const pagesNl: Record<string, Doc> = {
           { title: "Een zwakke wachtwoordzin", body: "De versleuteling op schijf leidt zich af van wat jij kiest. Een te raden wachtwoordzin is een te raden sleutel." },
           { title: "Alles tegelijk kwijtraken", body: "Geen apparaten en geen back-ups betekent geen herstel. Niemand heeft een kopie — precies dezelfde eigenschap die het privé houdt." },
           { title: "Wat je bank of mailprovider al weet", body: "Beatrax kan niet veranderen wat zij al hebben; het voorkomt alleen dat er nog een partij bij komt." },
+          { title: "Wat een relay ziet terwijl je koppelt", body: "Koppelberichten zijn niet versleuteld. Wie een relay draait die jij hebt aangewezen, kan de twee apparaat-id's, de publieke sleutels en de naam die je een apparaat gaf lezen, en ziet groottes en timing. Er gaat nooit een transactie doorheen en de sleutels die hij overdraagt zijn verzegeld — maar dát die twee apparaten gekoppeld zijn, blijft niet voor hem verborgen." },
         ],
       },
       {
