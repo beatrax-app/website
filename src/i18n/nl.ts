@@ -53,7 +53,7 @@ export const nl: Copy = {
     items: [
       {
         title: "Het blijft op je eigen computer",
-        body: "De database, de OAuth-tokens, de opgeslagen bonnen — allemaal op je eigen schijf. Geen telemetrie, geen cloudsync, geen account om aan te maken. Als apparaten wél synchroniseren, doen ze dat rechtstreeks met elkaar, end-to-end versleuteld, via een relay die alleen versleutelde tekst te zien krijgt.",
+        body: "De database, de OAuth-tokens, de opgeslagen bonnen — allemaal op je eigen schijf. Geen telemetrie, geen cloudsync, geen account om aan te maken. Als apparaten wél synchroniseren, doen ze dat rechtstreeks met elkaar over je eigen netwerk, end-to-end versleuteld. Er zit niets tussenin dat je transacties draagt.",
       },
       {
         title: "Het leest wat je bank al levert",
@@ -119,7 +119,7 @@ export const nl: Copy = {
     points: [
       {
         title: "Sync gaat peer-to-peer",
-        body: "Apparaten koppelen via een QR-code of een uitgesproken woordcode en verifiëren elkaar met een veiligheidsnummer. Ze praten rechtstreeks over je eigen netwerk als ze allebei aan staan, en vallen terug op een relay die alleen versleutelde tekst opslaat die hij niet kan lezen.",
+        body: "Apparaten koppelen via een QR-code of een uitgesproken woordcode en verifiëren elkaar met een veiligheidsnummer. Daarna gaan wijzigingen rechtstreeks van het ene apparaat naar het andere, over je eigen netwerk. Een optionele relay bestaat alleen om twee apparaten de koppeling te laten afronden en sleutels te laten uitwisselen wanneer ze elkaar niet kunnen bereiken — er gaat nooit een transactie doorheen.",
       },
       {
         title: "Versleuteld op schijf",
@@ -197,7 +197,7 @@ export const nl: Copy = {
     items: [
       {
         title: "End-to-end versleutelde apparaatsynchronisatie",
-        body: "Je apparaten stemmen rechtstreeks met elkaar af — ondertekend wijzigingslogboek, CRDT-samenvoeging, koppelen via QR met veiligheidsnummers, direct over je eigen netwerk met een relay die alleen versleutelde tekst bewaart. Geen account, geen server.",
+        body: "Je apparaten stemmen rechtstreeks met elkaar af — ondertekend wijzigingslogboek, CRDT-samenvoeging, koppelen via QR met veiligheidsnummers, en wijzigingen die alleen over de rechtstreekse verbinding tussen je eigen apparaten gaan. Geen account, geen server.",
         headline: true,
       },
       { title: "Envelop-budgettering", body: "Wijs elke euro toe, neem saldi mee, verschuif geld tussen enveloppen." },

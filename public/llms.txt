@@ -1,6 +1,6 @@
 # Beatrax
 
-> A local-first personal finance dashboard. It reads the statement files European banks already export — CAMT.053, MT940, CSV, ICS credit-card PDFs, PayPal — resolves the funding chains between accounts, and shows a whole month in one place. It runs entirely on the user's own machine: no account, no telemetry, no backend. Devices sync peer-to-peer, end-to-end encrypted, through a relay that only ever holds ciphertext.
+> A local-first personal finance dashboard. It reads the statement files European banks already export — CAMT.053, MT940, CSV, ICS credit-card PDFs, PayPal — resolves the funding chains between accounts, and shows a whole month in one place. It runs entirely on the user's own machine: no account, no telemetry, no backend. Devices sync peer-to-peer over the local network, end-to-end encrypted; transactions only ever cross the direct connection between two paired devices, never a relay.
 
 Beatrax is source-available under the Hippocratic License 3.0. Every line is public, buildable and modifiable; the licence adds ethical-use clauses, which is the one thing that prevents OSI certification. Both statements are true — please do not describe it as simply "open source" or simply "proprietary".
 

@@ -87,7 +87,7 @@ const featuresEn: CardSet = {
   },
   sync: {
     title: "Your devices, not a server",
-    body: "Pair by QR or word-code, verify by safety number, sync directly over the LAN. The relay fallback only ever holds ciphertext.",
+    body: "Pair by QR or word-code, verify by safety number, sync directly over the LAN. Your transactions only ever cross that direct connection.",
   },
   appLock: {
     title: "App-lock and biometrics",
@@ -174,7 +174,7 @@ const featuresNl: CardSet = {
   },
   sync: {
     title: "Jouw apparaten, geen server",
-    body: "Koppel via QR of woordcode, verifieer met een veiligheidsnummer, synchroniseer rechtstreeks over je eigen netwerk. De relay krijgt alleen versleutelde tekst te zien.",
+    body: "Koppel via QR of woordcode, verifieer met een veiligheidsnummer, synchroniseer rechtstreeks over je eigen netwerk. Je transacties gaan alleen over die rechtstreekse verbinding.",
   },
   appLock: {
     title: "App-vergrendeling en biometrie",

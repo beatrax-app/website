@@ -48,7 +48,7 @@ export const en = {
     items: [
       {
         title: "It stays on your machine",
-        body: "The database, the OAuth tokens, the cached receipts — all on your disk. No telemetry, no cloud sync, no account to create. When devices do sync, they sync directly to each other, end-to-end encrypted, through a relay that only ever holds ciphertext.",
+        body: "The database, the OAuth tokens, the cached receipts — all on your disk. No telemetry, no cloud sync, no account to create. When devices do sync, they sync directly to each other over your own network, end-to-end encrypted. Nothing in the middle carries your transactions.",
       },
       {
         title: "It reads what your bank already gives you",
@@ -114,7 +114,7 @@ export const en = {
     points: [
       {
         title: "Sync is peer-to-peer",
-        body: "Devices pair by QR code or a spoken word-code and verify each other by safety number. They talk directly over your LAN when both are awake, and fall back to a relay that only ever stores ciphertext it cannot read.",
+        body: "Devices pair by QR code or a spoken word-code and verify each other by safety number. Changes then cross directly between them, over your own network. An optional relay exists only so two devices can finish pairing and exchange keys when they cannot reach each other — it never carries a transaction.",
       },
       {
         title: "Encrypted at rest",
@@ -192,7 +192,7 @@ export const en = {
     items: [
       {
         title: "End-to-end encrypted device sync",
-        body: "Your devices reconcile directly with each other — signed change log, CRDT merge, QR pairing with safety numbers, LAN-direct with a relay that only ever holds ciphertext. No account, no server.",
+        body: "Your devices reconcile directly with each other — signed change log, CRDT merge, QR pairing with safety numbers, and changes that only ever cross the direct connection between your devices. No account, no server.",
         headline: true,
       },
       { title: "Envelope budgeting", body: "Assign every euro, roll balances over, move money between envelopes." },

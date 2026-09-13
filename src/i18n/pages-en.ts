@@ -192,7 +192,7 @@ export const pagesEn: Record<string, Doc> = {
         list: [
           { title: "Pairing is deliberate", body: "A new device joins by scanning a QR code or typing a word-code, and both ends confirm a matching safety number before anything flows." },
           { title: "Directly over your own network", body: "When two paired devices are awake on the same network they find each other and sync directly. Nothing leaves your house." },
-          { title: "The relay only sees ciphertext", body: "When one device is offline, changes wait in a store-and-forward relay. The relay holds encrypted bytes it has no key for, and forgets them once delivered." },
+          { title: "A relay is for pairing, not for your ledger", body: "Transactions never pass through a relay. If the other device is asleep, the changes wait on the device that made them until both are awake on the same network. A relay exists so two devices can finish pairing and exchange keys when they cannot reach each other directly — those keys are sealed to the receiving device, but the pairing messages themselves are not encrypted, so whoever runs one sees device identifiers, public keys and the name you gave a device." },
           { title: "Encrypted at rest too", body: "Each device encrypts its own copy with a key derived from your passphrase, released only when you unlock the app." },
           { title: "Removing a device revokes it", body: "Removing a device rotates the shared key and re-wraps it to the devices you kept, so the removed one cannot read anything sent afterwards." },
         ],
@@ -514,10 +514,10 @@ export const pagesEn: Record<string, Doc> = {
         ],
       },
       {
-        heading: "Direct when possible, relayed when not",
+        heading: "Direct always, with a relay only for pairing",
         body: [
-          "Two devices awake on the same network discover each other and sync directly — nothing leaves your home. When one is asleep, changes wait in a store-and-forward relay.",
-          "The relay is deliberately incapable of being interesting: it holds ciphertext it has no key for, cannot tell what changed, and forgets it once delivered. It is a mailbox, not a database.",
+          "Two devices awake on the same network discover each other and sync directly — nothing leaves your home. When one is asleep, its changes wait on the device that made them and cross the next time both are awake on the same network. There is no second road: a transaction only ever travels the direct connection between two of your own devices.",
+          "A relay is optional, and it is one you set up or nominate yourself. It exists for a single job: letting two devices finish pairing and exchange encryption keys when they cannot reach each other directly. It is worth saying plainly what that means it holds. The key handovers are sealed to the receiving device, so whoever runs the relay cannot open them. The pairing messages are not sealed: they carry the two device identifiers, the devices' public keys and the name you gave a device, and the confirming one is signed — readable, but not forgeable or alterable. A relay also sees metadata: sizes, timing, and which device identifiers exchange traffic. What it never sees is a transaction, an amount or a payee.",
         ],
         tone: "accent",
       },
@@ -552,7 +552,7 @@ export const pagesEn: Record<string, Doc> = {
       {
         heading: "What it defends against",
         cards: [
-          { title: "A compromised or hostile relay", body: "The sync relay only ever holds ciphertext it has no key for. Operating one grants no read access." },
+          { title: "A compromised or hostile relay", body: "Transactions never pass through a relay, so operating one grants no access to your ledger. The key handovers it does carry are sealed to the receiving device, and it cannot insert itself between two devices — the safety number you compare covers the keys." },
           { title: "Someone on your network", body: "Device-to-device sessions are mutually authenticated and forward-secret, so a passive listener learns nothing and cannot replay later." },
           { title: "A stolen laptop", body: "With the app-lock on, sensitive fields are encrypted at rest and the key is only released by your PIN or biometric." },
           { title: "A device you no longer trust", body: "Removing it rotates the group key and re-wraps to the rest, cutting it off from everything sent afterwards." },
@@ -568,6 +568,7 @@ export const pagesEn: Record<string, Doc> = {
           { title: "A weak passphrase", body: "At-rest encryption derives from what you choose. A guessable passphrase is a guessable key." },
           { title: "Losing everything at once", body: "No devices and no backups means no recovery. Nobody holds a copy — that is the same property that keeps it private." },
           { title: "What your bank or mail provider knows", body: "Beatrax cannot change what they already hold; it only avoids adding another party." },
+          { title: "What a relay sees while you pair", body: "Pairing messages are not encrypted. Whoever runs a relay you have nominated can read the two device identifiers, the devices' public keys and the name you gave a device, and can see sizes and timing. No transaction ever crosses it, and the keys it hands over are sealed — but the fact that those two devices paired is not hidden from it." },
         ],
       },
       {
