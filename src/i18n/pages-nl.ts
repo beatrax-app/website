@@ -195,7 +195,7 @@ export const pagesNl: Record<string, Doc> = {
           { title: "Rechtstreeks over je eigen netwerk", body: "Staan twee gekoppelde apparaten allebei aan op hetzelfde netwerk, dan vinden ze elkaar en synchroniseren ze direct. Er verlaat niets je huis." },
           { title: "Een relay is om te koppelen, niet voor je administratie", body: "Transacties gaan nooit door een relay. Slaapt het andere apparaat, dan blijven de wijzigingen staan op het apparaat dat ze maakte tot ze allebei wakker op hetzelfde netwerk zijn. Een relay bestaat zodat twee apparaten de koppeling kunnen afronden en sleutels kunnen uitwisselen wanneer ze elkaar niet rechtstreeks kunnen bereiken — die sleutels zijn verzegeld voor het ontvangende apparaat, maar de koppelberichten zelf zijn niet versleuteld, dus wie er één draait ziet apparaat-id's, publieke sleutels en de naam die je een apparaat gaf." },
           { title: "Ook versleuteld op schijf", body: "Elk apparaat versleutelt zijn eigen kopie met een sleutel die uit je wachtwoordzin is afgeleid en pas vrijkomt als je de app ontgrendelt." },
-          { title: "Een apparaat verwijderen trekt het in", body: "Verwijder je een apparaat, dan wordt de gedeelde sleutel geroteerd en opnieuw verpakt voor de apparaten die je houdt, zodat het verwijderde niets meer kan lezen." },
+          { title: "Een apparaat verwijderen trekt het in", body: "Verwijder je een apparaat, dan wordt de gedeelde sleutel geroteerd en opnieuw verpakt voor de apparaten die je houdt, zodat het verwijderde niets meer kan lezen van wat er daarna verstuurd is." },
         ],
       },
       {
